@@ -15,3 +15,4 @@ CustomLevelInit
 MODIFIED CODE:
 added to game_init:
   global.CustomLevelSprite = -1;
+
