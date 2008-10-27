@@ -1,0 +1,1 @@
+This DLL uses libpng, which needs zlib.

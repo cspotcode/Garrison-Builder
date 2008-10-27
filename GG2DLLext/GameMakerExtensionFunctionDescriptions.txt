@@ -1,0 +1,6 @@
+﻿kind dll-stdcall
+function GG2DLL_get_temp_filename(directory:string;prefix:string):string
+kind dll-stdcall
+function GG2DLL_embed_PNG_leveldata(filename:string;level_data:string):real
+kind dll-stdcall
+function GG2DLL_extract_PNG_leveldata(filename:string):string

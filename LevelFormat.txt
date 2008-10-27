@@ -1,0 +1,44 @@
+Note: For the sake of this document, a "newline" is ascii character 10, but in examples, I write it as (newline).
+
+The Gang Garrison 2 Custom Level Format:
+------------------------------------------
+A GG2 level is a .png image file.  On the inside, every PNG file is made of "chunks".  The PNG format supports a compressed text chunk.  This type of chunk contains compressed text data, labelled by an uncompressed text keyword.  GG2 level files contain a compressed text chunk with the label "Gang Garrison 2 Level Data".
+
+Background Image:
+-----------------
+The normal PNG image data is used as the background image.  If you load a GG2 level in an image editor, you'll see the background image.
+
+Compressed Text Format:
+-----------------------
+The text from the compressed text chunk, once decompressed, follows this format:
+Sections are delimited by a starting and ending tag.  A newline always precedes and follows each tag.  If a section is named "COLORS", then the starting tag is "{COLORS}" and the ending tag is "{END COLORS}"
+
+Sections:
+---------
+WALKMASK
+This section contains the walkmask.  It starts with the walkmask width, in human-readable text, then a newline, then the walkmask height, then a newline, and then the condensed walkmask data.
+Each character in the condensed data contains 6 pixels of walkmask.  To get those pixels out of a character, get it's ascii value, subtract 32, and then look at the 6 least significant bits.
+
+Example walkmask section (including surroundling tags for clarity):
+{WALKMASK}(newline)4(newline)8(newline)!IF980(newline){END WALKMASK}
+
+Made from this image:
+* = solid
+- = transparent
+
+----
+-**-
+*--*
+*--*
+*--*
+*--*
+-**-
+---*
+
+Often, the last character will not need to store a full 6 pixels.  In our example, the last character (0) only encodes the last 2 pixels: -*.  In this case, we pretend that we had the remaining pixels, and that they were transparent.  So, for -*, we encode -*----.  (010000 = 16.  16 + 32 = 48, which is the ascii value for the "0" character)
+
+ENTITIES
+This section contains a list of all entities that exist in the level.  It is very straightforward, so I'll just give an example:
+{ENTITIES}(newline)redspawn(newline)10(newline)20(newline)bluespawn(newline)50(newline)20(newline){END ENTITIES}
+
+This level contains 2 entities, a "redspawn" at coordinates 10, 20, and a "bluespawn" at coordinates 50, 20.  It's up to the game to decide what a "redspawn" is and how to create it.  If, for whatever reason, a certain entity needs more than just an x and a y coordinate, then the extra data will be listed after the coordinates, separated by (newline)s.  It's up to the level editor and the game to agree on exactly how much data each entity type has.
