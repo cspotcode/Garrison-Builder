@@ -30,7 +30,7 @@
 
 
 std::string temp_filename_return_filename;
-GG2DLL_API const char* get_temp_filename(LPCSTR directory, LPCSTR prefix) {
+GG2DLL_API const char* get_temp_filename(const char* directory, const char* prefix) {
 	char buffer[MAX_PATH];
 	if(GetTempFileNameA(directory, prefix, 0, buffer) == 0)
 	{
@@ -42,7 +42,7 @@ GG2DLL_API const char* get_temp_filename(LPCSTR directory, LPCSTR prefix) {
 }
 
 
-int load_png_file(LPCSTR filename, png_structp & png_ptr, png_infop & info_ptr, png_infop & end_info) {
+int load_png_file(const char* filename, png_structp & png_ptr, png_infop & info_ptr, png_infop & end_info) {
 	static FILE * fp;
 	fp = fopen(filename, "rb"); // open for reading, in binary mode
 	if(fp == NULL) {
@@ -107,7 +107,7 @@ int load_png_file(LPCSTR filename, png_structp & png_ptr, png_infop & info_ptr, 
 }
 
 
-int save_png_file(LPCSTR filename, png_structp & png_ptr, png_infop & info_ptr, png_infop & end_info) {
+int save_png_file(const char* filename, png_structp & png_ptr, png_infop & info_ptr, png_infop & end_info) {
 	//setup that longjump thing that libpng needs in case an error happens
     if (setjmp(png_jmpbuf(png_ptr)))
     {
@@ -143,7 +143,7 @@ int save_png_file(LPCSTR filename, png_structp & png_ptr, png_infop & info_ptr, 
 }
 
 
-GG2DLL_API double embed_PNG_leveldata(LPCSTR png_filename, LPCSTR new_leveldata) {
+GG2DLL_API double embed_PNG_leveldata(const char* png_filename, const char* new_leveldata) {
 	int retValue; // saves return values for descriptive output of where the routine failed
 
 	png_structp read_ptr;

@@ -119,7 +119,7 @@
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="&quot;E:\devenv\libpng-1.2.32&quot;;E:\devenv\zlib"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GG2DLL_EXPORTS"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"

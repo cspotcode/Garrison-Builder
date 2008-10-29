@@ -36,7 +36,7 @@
 #define GM_EXPORT extern "C"
 // the gamemaker variable types (real and string)
 #define GM_REAL double
-#define GM_STRING LPSTR
+#define GM_STRING char*;
 
 const char GG2_TEXT_CHUNK_KEYWORD[] = "Gang Garrison 2 Level Data";
 
