@@ -520,3 +520,36 @@ GG2DLL_API const char* extract_PNG_leveldata(const char* png_filename) {
 
 	return extract_PNG_leveldata_return_leveldata.c_str();
 }
+
+char compute_MD5_hex_output[16*2 + 1];
+GG2DLL_API const char* compute_MD5(const char* filename) {
+	// open the file for binary reading
+	FILE * fp;
+	fp = fopen(filename, "rb"); // open for reading, in binary mode
+	if(fp == NULL) {
+		return ""; // error, couldn't load the file
+	}
+
+
+	// setup the md5 algorithm
+	md5_state_t state;
+	md5_byte_t digest[16];
+	int di;
+	md5_init(&state);
+
+	while(!feof(fp)) { // while there's more stuff in the file
+		char buffer[201];
+		size_t amount = fread(buffer, 1, 200, fp); // read 200 bytes
+		md5_append(&state, (const md5_byte_t *)buffer, amount); // give them to the md5 algorithm
+	}
+	// put the md5sum into digest
+	md5_finish(&state, digest);
+	// write the digest into a readable hex string
+	for (di = 0; di < 16; ++di)
+	    sprintf(compute_MD5_hex_output + di * 2, "%02x", digest[di]);
+
+	// close the file
+	if(fclose(fp) != 0) return "";
+
+	return compute_MD5_hex_output;
+}

@@ -37,3 +37,4 @@
 #include <iostream>
 #include <fstream>
 #include <png.h>
+#include "md5.h"
