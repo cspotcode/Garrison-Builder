@@ -20,6 +20,8 @@
 
 // GG2DLL.cpp : Defines the exported functions for the DLL application.
 
+// using namespace std;
+// using namespace Magick;    oh forget it you already used std::
 
 #include "stdafx.h"
 #include "GG2DLL.h"
@@ -552,4 +554,55 @@ GG2DLL_API const char* compute_MD5(const char* filename) {
 	if(fclose(fp) != 0) return "";
 
 	return compute_MD5_hex_output;
+}
+
+GG2DLL_API double imageHeight(const char* fname) 
+{
+	// this function retrieves the height of the image that was inputted
+
+	std::string imageDir = fname;
+
+	std::string srcdir("");
+	if (getenv("SRCDIR") != 0)
+	{
+		srcdir = getenv("SRCDIR");
+	}
+
+	Magick::Image input(imageDir);
+	input.ping(imageDir);
+	return input.rows();
+}
+
+GG2DLL_API double imageWidth(const char* filenm) 
+{
+	// this function retrieves the width of the image that was inputted
+
+	std::string imageDir = filenm;
+
+	std::string srcdir("");
+	if (getenv("SRCDIR") != 0)
+	{
+		srcdir = getenv("SRCDIR");
+	}
+
+	Magick::Image input(imageDir);
+	input.ping(imageDir);
+	return input.columns();
+}
+
+GG2DLL_API double imagefSize(const char* file) 
+{
+	// this function retrieves the filesize of the image that was inputted
+
+	std::string imageDir = file;
+
+	std::string srcdir("");
+	if (getenv("SRCDIR") != 0)
+	{
+		srcdir = getenv("SRCDIR");
+	}
+
+	Magick::Image input(imageDir);
+	input.ping(imageDir);
+	return input.fileSize();
 }

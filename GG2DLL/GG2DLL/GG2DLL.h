@@ -51,3 +51,9 @@ GM_EXPORT GG2DLL_API double embed_PNG_leveldata(const char* png_filename, const 
 GM_EXPORT GG2DLL_API const char* extract_PNG_leveldata(const char* png_filename);
 
 GM_EXPORT GG2DLL_API const char* compute_MD5(const char* filename);
+
+GM_EXPORT GG2DLL_API double imageHeight(const char* fname);
+
+GM_EXPORT GG2DLL_API double imageWidth(const char* filenm);
+
+GM_EXPORT GG2DLL_API double imagefSize(const char* file);

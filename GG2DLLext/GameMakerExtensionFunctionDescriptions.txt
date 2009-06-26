@@ -6,3 +6,9 @@ kind dll-stdcall
 function GG2DLL_extract_PNG_leveldata(filename:string):string
 kind dll-stdcall
 function GG2DLL_compute_MD5(filename:string):string
+kind dll-stdcall
+function GG2DLL_imageHeight(filename:string):real
+kind dll-stdcall
+function GG2DLL_imageWidth(filename:string):real
+kind dll-stdcall
+function GG2DLL_imagefSize(filename:string):real

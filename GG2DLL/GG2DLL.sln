@@ -1,12 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GG2DLL", "GG2DLL\GG2DLL.vcproj", "{BEDE925F-A5AE-4D48-AF6E-CDEC944B035D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{59E979FC-3129-44B8-A166-BB07C07F740C} = {59E979FC-3129-44B8-A166-BB07C07F740C}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libmd5-rfc", "libmd5-rfc\libmd5-rfc.vcproj", "{59E979FC-3129-44B8-A166-BB07C07F740C}"
+# Visual C++ Express 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GG2DLL", "GG2DLL.vcproj", "{BEDE925F-A5AE-4D48-AF6E-CDEC944B035D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,10 +13,6 @@ Global
 		{BEDE925F-A5AE-4D48-AF6E-CDEC944B035D}.Debug|Win32.Build.0 = Debug|Win32
 		{BEDE925F-A5AE-4D48-AF6E-CDEC944B035D}.Release|Win32.ActiveCfg = Release|Win32
 		{BEDE925F-A5AE-4D48-AF6E-CDEC944B035D}.Release|Win32.Build.0 = Release|Win32
-		{59E979FC-3129-44B8-A166-BB07C07F740C}.Debug|Win32.ActiveCfg = Debug|Win32
-		{59E979FC-3129-44B8-A166-BB07C07F740C}.Debug|Win32.Build.0 = Debug|Win32
-		{59E979FC-3129-44B8-A166-BB07C07F740C}.Release|Win32.ActiveCfg = Release|Win32
-		{59E979FC-3129-44B8-A166-BB07C07F740C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

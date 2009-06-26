@@ -28,6 +28,7 @@
 #include "targetver.h"
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+#define _CRT_SECURE_NO_WARNINGS			// because VC++ nags me about deprecated functions
 // Windows Header Files:
 #include <windows.h>
 
@@ -38,3 +39,5 @@
 #include <fstream>
 #include <png.h>
 #include "md5.h"
+#include <Magick++.h> // Requires the addition of ImageMagick libraries and headers.
+#include <string>
