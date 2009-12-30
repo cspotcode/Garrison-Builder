@@ -123,3 +123,12 @@ _______________________________________________________________
 
 * Cleaned up the builder for public release
 
+
+Change Log for Garrison Builder v2.11 (30 December 2009 | 01:52 EDT)
+_______________________________________________________________
+
+* Migrated to Game Maker version 8.0.
+
+* Dramatically improved walkmask compile speeds.
+
+* Fixed visual size of killbox and fragbox entities to match actual in-game size.
