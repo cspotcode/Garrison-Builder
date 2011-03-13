@@ -1,0 +1,1 @@
+gmksplit.exe Source garrisonBuilder.gmk
