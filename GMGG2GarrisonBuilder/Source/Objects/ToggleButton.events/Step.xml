@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<event category="STEP" id="0">
+  <actions>
+    <action id="603" library="1">
+      <!--action name: Code-->
+      <kind>CODE</kind>
+      <allowRelative>false</allowRelative>
+      <question>false</question>
+      <canApplyTo>true</canApplyTo>
+      <actionType>CODE</actionType>
+      <functionName/>
+      <relative>false</relative>
+      <not>false</not>
+      <appliesTo>.self</appliesTo>
+      <arguments>
+        <argument kind="STRING">
+  if(toggled = true)
+    image_index = 1;
+  else
+    image_index = 0;
+
+
+  if (global.notOnTools == true)
+  {
+     alpha -= 0.05;
+  }
+  else if (global.notOnTools == false)
+  {
+     alpha += 0.1;
+  }
+  
+  if (alpha &lt; 0.3)
+  {
+    alpha = 0.3;
+  }
+  else if (alpha &gt; 1)
+  {
+    alpha = 1;
+  }</argument>
+      </arguments>
+    </action>
+  </actions>
+</event>
