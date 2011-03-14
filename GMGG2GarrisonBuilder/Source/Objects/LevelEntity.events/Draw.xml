@@ -15,28 +15,32 @@
       <arguments>
         <argument kind="STRING">if (type != "" || type != "moveTool")
 {
-if (global.specialE == 0)
-{
-    alpha = 1;
-}
-else if (global.specialE == 1)
-{
-    alpha = 0.8;
-}
+  if (global.specialE == 0)
+  {
+    image_alpha = 1;
+  }
+  else if (global.specialE == 1)
+  {
+    image_alpha = 0.8;
+  }
 
-if (type == "controlPoint1" || type == "controlPoint2" || type == "controlPoint3" || type == "controlPoint4" || type == "controlPoint5")
-{
-    draw_sprite_ext(sprite_index, image_index, x, y, 1, 1, 0, c_white, alpha);
+  if (string_pos("controlPoint", type) == 1)
+  {
+    // this is a control point entity, draw it with the point number
+    var text_sub;
+    draw_sprite_ext(sprite_index, image_index, x, y, 1, 1, 0, c_white, image_alpha);
     text_sub = string_delete(type, 1, 12);
     
     draw_text(x + 20, y + 20, text_sub);
-}
-else
-{
+  }
+  else
+  {
+    // regular entity
     image_index = 0;
-    draw_sprite_ext(sprite_index, image_index, x, y, 1, 1, 0, c_white, alpha);
+    draw_sprite_ext(sprite_index, image_index, x, y, 1, 1, 0, c_white, image_alpha);
+  }
 }
-}</argument>
+</argument>
       </arguments>
     </action>
   </actions>

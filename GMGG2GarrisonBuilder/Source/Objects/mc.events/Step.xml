@@ -13,7 +13,23 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">  if(!mouse_check_button(mb_right)) draggingView = false;
+        <argument kind="STRING">{
+  // fade toolbar when mouse is not over it
+  if (collision_point(mouse_x, mouse_y, ToolbarObject, true, true) &lt; 0) &amp;&amp; (collision_point(mouse_x, mouse_y, ToolBarTop, true, true) &lt; 0)
+  {
+    // mouse not hovering over toolbar
+    mc.currentTool = global.tool;
+    global.notOnTools = true;
+  }
+  else
+  {
+    // mouse hovering over toolbar
+    mc.currentTool = "";
+    global.notOnTools = false;
+  }
+
+  // turn off view dragging when user stops holding right mouse button
+  if(!mouse_check_button(mb_right)) draggingView = false;
   
   if (currentTool != "") || (currentTool != "moveTool")
   {
@@ -24,7 +40,10 @@
     addingEntitiesAllowed = false;
   }
   
-  global.enableGridSnap = enableGridSnap;</argument>
+  global.enableGridSnap = enableGridSnap;
+  
+}
+</argument>
       </arguments>
     </action>
   </actions>

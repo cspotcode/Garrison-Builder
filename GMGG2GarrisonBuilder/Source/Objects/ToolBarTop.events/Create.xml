@@ -17,9 +17,8 @@
 dragging = false;
 effective_x = x;
 effective_y = y;
-
-alpha = 1;
-}</argument>
+}
+</argument>
       </arguments>
     </action>
   </actions>

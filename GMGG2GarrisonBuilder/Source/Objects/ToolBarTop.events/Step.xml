@@ -22,29 +22,35 @@
   x = effective_x + view_xview[0]
   y = effective_y + view_yview[0]
   
-  with(ToolbarObject) {
-    x = relative_x + other.x
-    y = relative_y + other.y
-  }
-  
+  // fade in and out depending on if mouse is hovering or not
   if (global.notOnTools == true)
   {
-     alpha -= 0.05;
+     image_alpha -= 0.05;
   }
-  else if (global.notOnTools == false)
+  else
   {
-     alpha += 0.1;
+     image_alpha += 0.1;
   }
   
-  if (alpha &lt; 0.5)
+  if (image_alpha &lt; 0.5)
   {
-    alpha = 0.5;
+    image_alpha = 0.5;
   }
-  else if (alpha &gt; 1)
+  else if (image_alpha &gt; 1)
   {
-    alpha = 1;
+    image_alpha = 1;
   }
-}</argument>
+  
+  with(ToolbarObject) {
+    // move item to follow toolbar handle
+    x = relative_x + other.x
+    y = relative_y + other.y
+    
+    // set transparency to match toolbar handle
+    image_alpha = other.image_alpha
+  }
+}
+</argument>
       </arguments>
     </action>
   </actions>

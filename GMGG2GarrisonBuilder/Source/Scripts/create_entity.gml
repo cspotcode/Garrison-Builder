@@ -213,6 +213,7 @@
       new_ent.sprite_index = timer_ent;
     break;    
     default:
+      show_message("Error: system tried to create entity for which there is no sprite.");
       new_ent.sprite_index = trans;
 //      instance_destroy()'
     break;    

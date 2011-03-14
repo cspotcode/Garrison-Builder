@@ -14,6 +14,9 @@
       <appliesTo>.self</appliesTo>
       <arguments>
         <argument kind="STRING">{
+
+  initialize();
+
   currentTool = "";
   enableGridSnap = true;
   draggingView = false;
@@ -22,7 +25,8 @@
   createButtons();
   
   toolSpr = "";
-}</argument>
+}
+</argument>
       </arguments>
     </action>
   </actions>

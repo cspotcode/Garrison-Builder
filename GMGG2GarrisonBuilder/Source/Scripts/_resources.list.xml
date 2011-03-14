@@ -27,4 +27,5 @@
   <resource name="strayEntityFix" type="RESOURCE"/>
   <resource name="MapDecomps" type="GROUP"/>
   <resource name="sprite2png" type="RESOURCE"/>
+  <resource name="initialize" type="RESOURCE"/>
 </resources>

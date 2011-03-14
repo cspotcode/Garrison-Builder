@@ -11,7 +11,6 @@
   <resource name="SpecifyButton" type="RESOURCE"/>
   <resource name="ToolbarObject" type="RESOURCE"/>
   <resource name="ToolBarTop" type="RESOURCE"/>
-  <resource name="collDec" type="RESOURCE"/>
   <resource name="GUIObject" type="RESOURCE"/>
   <resource name="CollisionDummy" type="RESOURCE"/>
 </resources>
