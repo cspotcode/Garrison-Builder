@@ -17,18 +17,19 @@
   if(dragging = true) {
     effective_x = mouse_x - relative_x;
     effective_y = mouse_y - relative_y;
-  }
   
-  if(global.enableGridSnap == true) {
-    x = round(round((effective_x) / 6) * 6);
-    y = round(round((effective_y) / 6) * 6);
+    if(global.enableGridSnap == true) {
+      x = round(round((effective_x) / 6) * 6);
+      y = round(round((effective_y) / 6) * 6);
+    }
+    else
+    {
+      x = effective_x;
+      y = effective_y;
+    }
   }
-  else
-  {
-  x = effective_x;
-  y = effective_y;
-  }
-}</argument>
+}
+</argument>
       </arguments>
     </action>
   </actions>

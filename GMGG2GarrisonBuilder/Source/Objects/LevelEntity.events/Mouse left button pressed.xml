@@ -15,9 +15,9 @@
       <arguments>
         <argument kind="STRING">if (mc.currentTool = "moveTool")
 {
-dragging = true;
-relative_x = mouse_x - x;
-relative_y = mouse_y - y;
+  dragging = true;
+  relative_x = mouse_x - x;
+  relative_y = mouse_y - y;
 }
 </argument>
       </arguments>
