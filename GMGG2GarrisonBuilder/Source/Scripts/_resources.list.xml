@@ -28,4 +28,5 @@
   <resource name="MapDecomps" type="GROUP"/>
   <resource name="sprite2png" type="RESOURCE"/>
   <resource name="initialize" type="RESOURCE"/>
+  <resource name="spriteForEntityType" type="RESOURCE"/>
 </resources>

@@ -29,14 +29,10 @@ strayEntityFix();
   }
 }
 else
-{
-    if (file_exists(program_directory + "gg2.ini"))
-    {
-        file_delete(program_directory + "gg2.ini");
-    }
-    
+{   
     game_end();
-}</argument>
+}
+</argument>
       </arguments>
     </action>
   </actions>
