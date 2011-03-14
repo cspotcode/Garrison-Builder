@@ -18,10 +18,11 @@
   if(instance_position(mouse_x,mouse_y,GUIObject) &lt; 0) {
     // check for tools that don't place entities, or if we're not
     // allowed to place items now
-    if(currentTool != "" &amp;&amp; addingEntitiesAllowed)
+    if(currentTool != "" &amp;&amp; currentTool != "moveTool" &amp;&amp; addingEntitiesAllowed)
       create_entity(mouse_x, mouse_y, currentTool);
   }
-}</argument>
+}
+</argument>
       </arguments>
     </action>
   </actions>

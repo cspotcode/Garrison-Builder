@@ -41,8 +41,6 @@ draw_set_font(gg2Fnt);
     message_input_font(gg2Fnt,9,c_white,0);
 */
 
-global.tool = "";
-
 if file_exists("game_errors.log") file_delete("game_errors.log");
 
 ini_open("gb.ini");

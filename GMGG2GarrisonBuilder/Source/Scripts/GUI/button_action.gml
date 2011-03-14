@@ -133,7 +133,6 @@
       break;
     case "noTool":
       mc.currentTool = "";
-      global.tool = "";
       break;
       */
     //let's comment this part out, since there isn't a currently implemented way

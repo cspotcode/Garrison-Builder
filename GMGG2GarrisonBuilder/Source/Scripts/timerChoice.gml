@@ -11,4 +11,3 @@ strayEntityFix();
       }
     
       mc.currentTool = "timer";
-      global.tool = "timer";

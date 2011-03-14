@@ -18,13 +18,11 @@
   if (collision_point(mouse_x, mouse_y, ToolbarObject, true, true) &lt; 0) &amp;&amp; (collision_point(mouse_x, mouse_y, ToolBarTop, true, true) &lt; 0)
   {
     // mouse not hovering over toolbar
-    mc.currentTool = global.tool;
     global.notOnTools = true;
   }
   else
   {
     // mouse hovering over toolbar
-    mc.currentTool = "";
     global.notOnTools = false;
   }
 

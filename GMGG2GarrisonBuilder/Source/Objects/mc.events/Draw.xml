@@ -13,7 +13,7 @@
       <not>false</not>
       <appliesTo>.self</appliesTo>
       <arguments>
-        <argument kind="STRING">// var toolSpr;
+        <argument kind="STRING">var toolSpr;
 
 switch (currentTool)
 {
@@ -214,28 +214,23 @@ switch (currentTool)
     break;
 }
 
-if (toolSpr &gt; 0)
+if (toolSpr &gt; 0 &amp;&amp; global.notOnTools)
 {
  window_set_cursor(cr_none); // because an arrow above your entity isn't very clear.
  draw_sprite_ext(toolSpr, 0, mouse_x, mouse_y, 1, 1, 0, c_white, 0.45);
  // global.notOnTools = true;
 }
-else if (toolSpr == -1) || (toolSpr == -2)
+else
 {
  window_set_cursor(cr_default); // the mouse cursor is displayed when we aren't placing entities.
- /*
- if (toolSpr == -1)
- {
-    global.notOnTools = false; // for toolbox opacity.
- }
- */
 }
 /*
 else if (toolSpr == -2)
 {
  cursor_sprite = dragCur; // let's show the "drag" cursor when the current tool is the entity mover.
 }
-*/</argument>
+*/
+</argument>
       </arguments>
     </action>
   </actions>

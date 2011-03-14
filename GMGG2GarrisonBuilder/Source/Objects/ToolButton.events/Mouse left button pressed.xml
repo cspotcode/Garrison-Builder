@@ -15,7 +15,6 @@
       <arguments>
         <argument kind="STRING">{
   mc.currentTool = tool;
-  global.tool = tool;
   with(ToolButton) {
     toggled = false;
     image_index = 0;
@@ -26,7 +25,8 @@
   }  
   toggle = true;
   image_index = 1;
-}</argument>
+}
+</argument>
       </arguments>
     </action>
   </actions>
