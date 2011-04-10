@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC '-//NetBeans//DTD Filesystem 1.2//EN' 'null'>
+<filesystem>
+    <folder name="Actions">
+        <folder name="Maps">
+            <file name="newMapViewActionThing.instance">
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
+                <attr name="delegate" newvalue="com.ganggarrison.garrisonbuilder.NewMapViewAction"/>
+                <attr name="displayName" stringvalue="New Map"/>
+                <attr name="iconBase" stringvalue="com/ganggarrison/garrisonbuilder/newMap.png"/>
+                <attr name="noIconInMenu" boolvalue="false"/>
+            </file>
+        </folder>
+    </folder>
+    <folder name="Toolbars">
+        <folder name="File">
+            <file name="org-myorg-googletoolbar-GoogleAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Maps/newMapViewActionThing"/>
+                <attr name="position" intvalue="0"/>
+            </file>
+        </folder>
+    </folder>
+</filesystem>

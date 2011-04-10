@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+OpenIDE-Module: com.ganggarrison.garrisonbuilder
+OpenIDE-Module-Layer: com/ganggarrison/garrisonbuilder/layer.xml
+OpenIDE-Module-Localizing-Bundle: com/ganggarrison/garrisonbuilder/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+
