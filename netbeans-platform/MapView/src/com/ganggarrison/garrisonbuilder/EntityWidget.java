@@ -6,6 +6,9 @@ import java.awt.Image;
 import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import org.netbeans.api.visual.action.ActionFactory;
+import org.netbeans.api.visual.action.MoveProvider;
+import org.netbeans.api.visual.action.MoveStrategy;
 import org.netbeans.api.visual.widget.ImageWidget;
 import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
@@ -26,6 +29,9 @@ public class EntityWidget extends Widget implements PropertyChangeListener {
         addChild(imageWidget);
         setupToMatchEntity(e);
         moveToEntityPosition(ent);
+
+        getActions().addAction(ActionFactory.createMoveAction());
+        
         e.addPropertyChangeListener(this);
     }
 

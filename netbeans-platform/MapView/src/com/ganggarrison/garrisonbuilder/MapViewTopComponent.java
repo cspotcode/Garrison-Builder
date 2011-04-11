@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import org.netbeans.api.visual.action.AcceptProvider;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectorState;
+import org.netbeans.api.visual.action.SelectProvider;
 import org.netbeans.api.visual.model.ObjectScene;
 import org.netbeans.api.visual.widget.LabelWidget;
 import org.netbeans.api.visual.widget.Widget;
@@ -63,10 +64,28 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
         scene.addChild(w);
 
         // add zooming support (hold CTRL and use mouse wheel)
-        scene.getActions().addAction(ActionFactory.createZoomAction(1.5, false));
+        scene.getActions().addAction(ActionFactory.createZoomAction(2, true));
         
         // TODO panning doesn't seem to be working (supposed to hold down mouse wheel)
         scene.getActions().addAction(ActionFactory.createPanAction());
+
+        /*scene.getActions().addAction(ActionFactory.createSelectAction(new SelectProvider() {
+
+            @Override
+            public boolean isAimingAllowed(Widget widget, Point localLocation, boolean invertSelection) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public boolean isSelectionAllowed(Widget widget, Point localLocation, boolean invertSelection) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void select(Widget widget, Point localLocation, boolean invertSelection) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        }));*/
 
         scene.getActions().addAction(ActionFactory.createAcceptAction(new MyAcceptProvider()));
 
@@ -94,7 +113,6 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
     @Override
     public void entityAdded(GameMap m, Entity e) {
         EntityWidget w = new EntityWidget(scene, e);
-        w.getActions().addAction(ActionFactory.createMoveAction());
         scene.addChild(w);
         scene.repaint(); // TODO shouldn't a repaint happen automatically because a widget has been added?
         scene.addObject(e, w);
