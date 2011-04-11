@@ -22,6 +22,7 @@ import org.netbeans.api.visual.action.ConnectorState;
 import org.netbeans.api.visual.action.SelectProvider;
 import org.netbeans.api.visual.model.ObjectScene;
 import org.netbeans.api.visual.widget.LabelWidget;
+import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.spi.palette.PaletteController;
 import org.openide.util.Exceptions;
@@ -36,32 +37,38 @@ import org.openide.windows.TopComponent;
 public class MapViewTopComponent extends TopComponent implements PropertyChangeListener, GameMapChangeListener {
 
     ObjectScene scene = null;
+    LayerWidget guiVisualsLayer;
 
     final GameMap map;
 
     public MapViewTopComponent(GameMap map)  {
         this.map = map;
-        map.addPropertyChangeListener(this);
-        map.addGameMapChangeListener(this);
 
-        setLayout(new BorderLayout());
+        setDisplayName("GG2 Map");
+        setName("NAME");
+        setToolTipText("TOOL TIP TEXT");
 
+        // create scene to visualize the map
         scene = new ObjectScene();
-        Dimension size = new Dimension(map.getWidth(), map.getHeight());
-        //scene.setPreferredSize(size);
-        //scene.setMaximumSize(size);
-        //scene.setMinimumSize(size);
+        guiVisualsLayer = new LayerWidget(scene);
+        scene.addChild(guiVisualsLayer);
 
+        // create a scrolling view onto the scene
+        setLayout(new BorderLayout());
         JComponent view = scene.createView();
-        //view.setPreferredSize(size);
-        //view.setMinimumSize(size);
-
         JScrollPane scrollPane = new JScrollPane(view);
-        // TODO get the scene to size itself to the map correctly
         add(scrollPane, BorderLayout.CENTER);
-        LabelWidget w = new LabelWidget(scene, "Hello world!!111");
+
+        // add a big widget to the scene to force the appearance of scrollbars
+        // TODO get rid of this
+        LabelWidget w = new LabelWidget(scene, "Hello world!");
         w.setPreferredSize(new Dimension(600, 300));
         scene.addChild(w);
+
+        // TODO get the scene to size itself to the map correctly
+
+        // allow dragging a rectangle to select entities
+        scene.getActions().addAction(ActionFactory.createRectangularSelectAction(scene, guiVisualsLayer));
 
         // add zooming support (hold CTRL and use mouse wheel)
         scene.getActions().addAction(ActionFactory.createZoomAction(2, true));
@@ -69,27 +76,13 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
         // TODO panning doesn't seem to be working (supposed to hold down mouse wheel)
         scene.getActions().addAction(ActionFactory.createPanAction());
 
-        /*scene.getActions().addAction(ActionFactory.createSelectAction(new SelectProvider() {
-
-            @Override
-            public boolean isAimingAllowed(Widget widget, Point localLocation, boolean invertSelection) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public boolean isSelectionAllowed(Widget widget, Point localLocation, boolean invertSelection) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-
-            @Override
-            public void select(Widget widget, Point localLocation, boolean invertSelection) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        }));*/
-
+        // allows dropping of palette entities onto the map
         scene.getActions().addAction(ActionFactory.createAcceptAction(new MyAcceptProvider()));
 
         associateLookup(Lookups.fixed(new Object[] {getPalette()}));
+
+        map.addPropertyChangeListener(this);
+        map.addGameMapChangeListener(this);
     }
 
     @Override

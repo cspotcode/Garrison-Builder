@@ -2,6 +2,7 @@
 package com.ganggarrison.garrisonbuilder;
 
 import com.ganggarrison.garrisonbuilder.GameMap.Entity;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 import java.beans.PropertyChangeEvent;
@@ -9,8 +10,10 @@ import java.beans.PropertyChangeListener;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.MoveProvider;
 import org.netbeans.api.visual.action.MoveStrategy;
+import org.netbeans.api.visual.border.BorderFactory;
+import org.netbeans.api.visual.model.ObjectScene;
+import org.netbeans.api.visual.model.ObjectState;
 import org.netbeans.api.visual.widget.ImageWidget;
-import org.netbeans.api.visual.widget.Scene;
 import org.netbeans.api.visual.widget.Widget;
 
 /**
@@ -22,7 +25,7 @@ public class EntityWidget extends Widget implements PropertyChangeListener {
     Entity ent;
     ImageWidget imageWidget;
 
-    public EntityWidget(Scene s, Entity e) {
+    public EntityWidget(ObjectScene s, Entity e) {
         super(s);
         ent = e;
         imageWidget = new ImageWidget(s);
@@ -30,8 +33,15 @@ public class EntityWidget extends Widget implements PropertyChangeListener {
         setupToMatchEntity(e);
         moveToEntityPosition(ent);
 
-        getActions().addAction(ActionFactory.createMoveAction());
+        getActions().addAction(s.createSelectAction());
+
+        getActions().addAction(ActionFactory.createMoveAction(
+                ActionFactory.createSnapToGridMoveStrategy(6, 6),
+                new ObjectSceneAllSelectedMoveProvider(s)
+        ));
         
+        // TODO moving entityWidget needs to also move the entity
+
         e.addPropertyChangeListener(this);
     }
 
@@ -60,6 +70,20 @@ public class EntityWidget extends Widget implements PropertyChangeListener {
     private void moveToEntityPosition(Entity e) {
         Point p = new Point(ent.getX(), ent.getY());
         this.setPreferredLocation(p);
+    }
+
+    @Override
+    protected void notifyStateChanged(ObjectState previousState, ObjectState state) {
+        super.notifyStateChanged(previousState, state);
+        // if widget has been selected
+        if(!previousState.isSelected() && state.isSelected()) {
+            setBorder(BorderFactory.createDashedBorder(Color.black, 3, 3, true));
+            bringToFront();
+        }
+        // if widget has been deselected
+        if(previousState.isSelected() && !state.isSelected()) {
+            setBorder(BorderFactory.createEmptyBorder());
+        }
     }
 
 }
