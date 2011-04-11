@@ -1,5 +1,5 @@
 
-package com.ganggarrison.garrisonbuilder;
+package com.ganggarrison.garrisonbuilder.GameMap;
 
 import java.awt.Image;
 

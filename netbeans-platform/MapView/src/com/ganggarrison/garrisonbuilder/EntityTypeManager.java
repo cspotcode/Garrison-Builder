@@ -5,6 +5,7 @@
 
 package com.ganggarrison.garrisonbuilder;
 
+import com.ganggarrison.garrisonbuilder.GameMap.EntityType;
 import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -73,8 +74,8 @@ public class EntityTypeManager {
         t1.setPalletteImage(i);
         types.add(t1);
         EntityType t2 = new EntityType("testEnt2");
-        t1.setMapImage(i);
-        t1.setPalletteImage(i);
+        t2.setMapImage(i);
+        t2.setPalletteImage(i);
         types.add(t2);
     }
 

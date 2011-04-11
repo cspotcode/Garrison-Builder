@@ -1,5 +1,5 @@
 
-package com.ganggarrison.garrisonbuilder;
+package com.ganggarrison.garrisonbuilder.GameMap;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -19,6 +19,7 @@ public class GameMap {
     private int height;
     
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    private final GameMapChangeSupport gmcs = new GameMapChangeSupport(this);
 
     public GameMap() {
         entities = new HashSet<Entity>();
@@ -47,12 +48,19 @@ public class GameMap {
     }
 
     public boolean addEntity(Entity ent) {
-        return entities.add(ent);
-
+        boolean b = entities.add(ent);
+        if(b) {
+            gmcs.fireEntityAdded(ent);
+        }
+        return b;
     }
 
     public boolean removeEntity(Entity ent) {
-        return entities.remove(ent);
+        boolean b = entities.remove(ent);
+        if(b) {
+            gmcs.fireEntityRemoved(ent);
+        }
+        return b;
     }
 
     public Set<Entity> getEntitySet() {
@@ -65,6 +73,14 @@ public class GameMap {
 
     public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
         pcs.addPropertyChangeListener(listener);
+    }
+
+    public void addGameMapChangeListener(GameMapChangeListener listener) {
+        gmcs.addGameMapChangeListener(listener);
+    }
+
+    public void removeGameMapChangeListener(GameMapChangeListener listener) {
+        gmcs.addGameMapChangeListener(listener);
     }
 
 }

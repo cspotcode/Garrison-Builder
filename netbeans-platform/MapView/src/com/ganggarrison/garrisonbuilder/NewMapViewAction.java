@@ -1,6 +1,7 @@
 
 package com.ganggarrison.garrisonbuilder;
 
+import com.ganggarrison.garrisonbuilder.GameMap.GameMap;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
