@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="GG2DLL" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug Win32">
+				<Option output="GG2DLL" prefix_auto="1" extension_auto="1" />
+				<Option object_output="Debug Win32" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-DWIN32" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_WINDOWS" />
+					<Add option="-D_USRDLL" />
+					<Add option="-DPNGDLL_EXPORTS" />
+					<Add option="-W" />
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add directory="E:\devenv\libpng-1.2.32" />
+					<Add directory="E:\devenv\zlib" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="E:\devenv\libpng-1.2.32" />
+					<Add directory="E:\devenv\zlib" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="libpng" />
+					<Add library="zlib" />
+					<Add directory="E:\devenv\libpng-1.2.32\projects\visualc71\Win32_LIB_Release\ZLib" />
+					<Add directory="E:\devenv\libpng-1.2.32\projects\visualc71\Win32_LIB_Release" />
+				</Linker>
+			</Target>
+			<Target title="Release Win32">
+				<Option output="GG2DLL" prefix_auto="1" extension_auto="1" />
+				<Option object_output="Release Win32" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-W" />
+					<Add option="-DWIN32" />
+					<Add option="-DNDEBUG" />
+					<Add option="-D_WINDOWS" />
+					<Add option="-D_USRDLL" />
+					<Add option="-DGG2DLL_EXPORTS" />
+					<Add directory="D:\Programmieren\zlib-1.2.5" />
+					<Add directory="D:\Programmieren\lpng152" />
+					<Add directory="D:\Programmieren\boost_1_45_0" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="libpng" />
+					<Add library="z" />
+					<Add directory="D:\Programmieren\zlib-1.2.5" />
+					<Add directory="D:\Programmieren\lpng152" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="GG2DLL.cpp" />
+		<Unit filename="GG2DLL.h" />
+		<Unit filename="md5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="md5.h" />
+		<Unit filename="raii.hpp" />
+		<Unit filename="stdafx.h" />
+		<Unit filename="targetver.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
