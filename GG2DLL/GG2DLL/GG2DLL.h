@@ -44,6 +44,6 @@ GM_EXPORT GG2DLL_API GM_STRING get_temp_filename(GM_STRING directory, GM_STRING 
 
 GM_EXPORT GG2DLL_API GM_REAL embed_PNG_leveldata(GM_STRING png_filename, GM_STRING new_leveldata);
 
-GM_EXPORT GG2DLL_API GM_STRING extract_PNG_leveldata(GM_STRING png_filename);
+GM_EXPORT GG2DLL_API GM_STRING extract_PNG_leveldata(GM_STRING png_filename, GM_STRING walkmask_filename);
 
 GM_EXPORT GG2DLL_API GM_STRING compute_MD5(GM_STRING filename);

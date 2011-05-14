@@ -23,6 +23,7 @@
 #include "stdafx.h"
 #include "GG2DLL.h"
 #include "raii.hpp"
+#include <cstdlib>
 
 const char GG2_TEXT_CHUNK_KEYWORD[] = "Gang Garrison 2 Level Data";
 
@@ -347,8 +348,7 @@ GG2DLL_API GM_REAL embed_PNG_leveldata(GM_STRING png_filename, GM_STRING new_lev
 	return 0;
 }
 
-std::string extract_PNG_leveldata_return_leveldata;
-GG2DLL_API GM_STRING extract_PNG_leveldata(GM_STRING png_filename) {
+static std::string load_leveldata(const char *png_filename) {
     raii_png_read png_read;
 
     if(!png_read.structp || !png_read.infop) {
@@ -378,12 +378,119 @@ GG2DLL_API GM_STRING extract_PNG_leveldata(GM_STRING png_filename) {
 	}
 
 	if(gg2_text_index == -1) { // if the text wasn't found
-		extract_PNG_leveldata_return_leveldata = "";
+		return "";
 	} else {
-        extract_PNG_leveldata_return_leveldata = text_ptr[gg2_text_index].text;
+        return text_ptr[gg2_text_index].text;
 	}
+}
 
-	return extract_PNG_leveldata_return_leveldata.c_str();
+const std::string ENTITYTAG = "{ENTITIES}";
+const std::string ENDENTITYTAG = "{END ENTITIES}";
+const std::string WALKMASKTAG = "{WALKMASK}";
+const std::string ENDWALKMASKTAG = "{END WALKMASK}";
+const std::string DIVIDER = "\x0a";
+
+static int writeGreyscalePng(const char *pngFilename, uint8_t *imageData, size_t width, size_t height) {
+    raii_png_write png_write;
+    png_bytep *row_ptr = (png_bytep*)malloc(height*sizeof(png_bytep));
+
+    if(row_ptr == NULL) {
+        return -1;
+    }
+
+    if (setjmp(png_jmpbuf(png_write.structp))) {
+        free(row_ptr);
+        return -1;
+    }
+
+    png_set_IHDR(png_write.structp, png_write.infop, width, height, 8, PNG_COLOR_TYPE_GRAY,
+            PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+
+    for(size_t i=0; i<height; i++) {
+        row_ptr[i] = imageData + i*width;
+    }
+
+    png_set_rows(png_write.structp, png_write.infop, row_ptr);
+    int returnValue = save_png_file(pngFilename, png_write.structp, png_write.infop);
+    free(row_ptr);
+    return returnValue;
+}
+
+static int decodeWalkmaskToPng(const char *pngFilename, std::string walkmaskSection) {
+    size_t scanpos = 0;
+    size_t lineEnd = walkmaskSection.find(DIVIDER, scanpos);
+    if(lineEnd == std::string::npos) {
+        return -1;
+    }
+    std::string line = walkmaskSection.substr(scanpos, lineEnd-scanpos);
+    scanpos = lineEnd+1;
+    size_t width = atol(line.c_str());
+
+    lineEnd = walkmaskSection.find(DIVIDER, scanpos);
+    if(lineEnd == std::string::npos) {
+        return -1;
+    }
+    line = walkmaskSection.substr(scanpos, lineEnd-scanpos);
+    scanpos = lineEnd+1;
+    size_t height = atol(line.c_str());
+
+    if(width > 1000000 || height > 1000000) {
+        return -1;
+    }
+
+    uint8_t *imageData = (uint8_t*)malloc(width*height + 6);
+    if(imageData == NULL) {
+        return -1;
+    }
+
+    for(size_t imageIndex = 0; imageIndex < width*height && scanpos < walkmaskSection.length(); imageIndex+=6, scanpos++) {
+        uint8_t currentData = walkmaskSection.at(scanpos) - 32;
+        for(int bitpos=0; bitpos<6; bitpos++) {
+            if(currentData&(1<<(5-bitpos))) {
+                imageData[imageIndex+bitpos] = 0;
+            } else {
+                imageData[imageIndex+bitpos] = 255;
+            }
+        }
+    }
+
+    int returnValue = writeGreyscalePng(pngFilename, imageData, width, height);
+    free(imageData);
+    return returnValue;
+}
+
+std::string entitySectionWithTags_return;
+GG2DLL_API GM_STRING extract_PNG_leveldata(GM_STRING png_filename, GM_STRING walkmask_filename) {
+    std::string leveldata = load_leveldata(png_filename);
+
+    size_t entityTagPos = leveldata.find(ENTITYTAG);
+    size_t endEntityTagPos = leveldata.find(ENDENTITYTAG);
+    size_t walkmaskTagPos = leveldata.find(WALKMASKTAG);
+    size_t endWalkmaskTagPos = leveldata.find(ENDWALKMASKTAG);
+
+    if(entityTagPos == std::string::npos
+            || endEntityTagPos == std::string::npos
+            || walkmaskTagPos == std::string::npos
+            || endWalkmaskTagPos == std::string::npos
+            || entityTagPos > endEntityTagPos
+            || walkmaskTagPos > endWalkmaskTagPos) {
+        return "";
+    }
+
+    // Extract the inner content of the walkmask section
+    size_t startWalkmaskSection = walkmaskTagPos + WALKMASKTAG.length() + DIVIDER.length();
+    size_t walkmaskSectionLength = endWalkmaskTagPos - startWalkmaskSection - DIVIDER.length();
+    std::string walkmaskSection = leveldata.substr(startWalkmaskSection, walkmaskSectionLength);
+
+    // Extract the entity tag section including the tags, for returning back to gg2
+    size_t entitySectionWithTagsLength = endEntityTagPos - entityTagPos + ENDENTITYTAG.length();
+    entitySectionWithTags_return = leveldata.substr(entityTagPos, entitySectionWithTagsLength);
+
+    if(decodeWalkmaskToPng(walkmask_filename, walkmaskSection)) {
+        return "";
+    }
+
+    return entitySectionWithTags_return.c_str();
 }
 
 char compute_MD5_hex_output[16*2 + 1];

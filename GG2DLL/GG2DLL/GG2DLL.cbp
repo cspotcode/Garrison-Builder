@@ -57,6 +57,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add option="-static" />
 					<Add library="libpng" />
 					<Add library="z" />
 					<Add directory="D:\Programmieren\zlib-1.2.5" />
