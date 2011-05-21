@@ -1,5 +1,5 @@
 
-package com.ganggarrison.garrisonbuilder.GameMap;
+package com.ganggarrison.garrisonbuilder.gamemap;
 
 import java.util.HashSet;
 import java.util.Set;

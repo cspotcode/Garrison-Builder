@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE filesystem PUBLIC '-//NetBeans//DTD Filesystem 1.2//EN' 'null'>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
 <filesystem>
     <folder name="Actions">
         <folder name="Maps">
+            <file name="com-ganggarrison-garrisonbuilder-SetGameMapBackgroundImageAction.instance">
+                <attr name="delegate" methodvalue="org.openide.awt.Actions.inject"/>
+                <attr name="displayName" bundlevalue="com.ganggarrison.garrisonbuilder.Bundle#CTL_SetGameMapBackgroundImageAction"/>
+                <attr name="iconBase" stringvalue="com/ganggarrison/garrisonbuilder/setBackground.png"/>
+                <attr name="injectable" stringvalue="com.ganggarrison.garrisonbuilder.SetGameMapBackgroundImageAction"/>
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.context"/>
+                <attr name="noIconInMenu" boolvalue="false"/>
+                <attr name="selectionType" stringvalue="EXACTLY_ONE"/>
+                <attr name="type" stringvalue="GameMap"/>
+            </file>
             <file name="newMapViewActionThing.instance">
                 <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
                 <attr name="delegate" newvalue="com.ganggarrison.garrisonbuilder.NewMapViewAction"/>
@@ -14,8 +24,12 @@
     </folder>
     <folder name="Toolbars">
         <folder name="File">
-            <file name="org-myorg-googletoolbar-GoogleAction.shadow">
-                <attr name="originalFile" stringvalue="Actions/Maps/newMapViewActionThing"/>
+            <file name="com-ganggarrison-garrisonbuilder-SetGameMapBackgroundImageAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Maps/com-ganggarrison-garrisonbuilder-SetGameMapBackgroundImageAction.instance"/>
+                <attr name="position" intvalue="500"/>
+            </file>
+            <file name="newMapViewActionThing.shadow">
+                <attr name="originalFile" stringvalue="Actions/Maps/newMapViewActionThing.instance"/>
                 <attr name="position" intvalue="0"/>
             </file>
         </folder>

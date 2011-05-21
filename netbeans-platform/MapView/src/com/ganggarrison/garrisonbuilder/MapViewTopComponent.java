@@ -1,12 +1,13 @@
 
 package com.ganggarrison.garrisonbuilder;
 
-import com.ganggarrison.garrisonbuilder.GameMap.Entity;
-import com.ganggarrison.garrisonbuilder.GameMap.GameMap;
-import com.ganggarrison.garrisonbuilder.GameMap.EntityType;
-import com.ganggarrison.garrisonbuilder.GameMap.GameMapChangeListener;
+import com.ganggarrison.garrisonbuilder.gamemap.Entity;
+import com.ganggarrison.garrisonbuilder.gamemap.GameMap;
+import com.ganggarrison.garrisonbuilder.gamemap.EntityType;
+import com.ganggarrison.garrisonbuilder.gamemap.GameMapChangeListener;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -21,6 +22,7 @@ import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectorState;
 import org.netbeans.api.visual.action.SelectProvider;
 import org.netbeans.api.visual.model.ObjectScene;
+import org.netbeans.api.visual.widget.ImageWidget;
 import org.netbeans.api.visual.widget.LabelWidget;
 import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Widget;
@@ -36,12 +38,15 @@ import org.openide.windows.TopComponent;
  */
 public class MapViewTopComponent extends TopComponent implements PropertyChangeListener, GameMapChangeListener {
 
-    ObjectScene scene = null;
-    LayerWidget guiVisualsLayer;
+    private ObjectScene scene = null;
+    private LayerWidget guiVisualsLayer;
 
     final GameMap map;
 
-    public MapViewTopComponent(GameMap map)  {
+    private ImageWidget backgroundWidget;
+    private ImageWidget walkmaskWidget;
+
+    public MapViewTopComponent(GameMap map) {
         this.map = map;
 
         setDisplayName("GG2 Map");
@@ -58,12 +63,14 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
         JComponent view = scene.createView();
         JScrollPane scrollPane = new JScrollPane(view);
         add(scrollPane, BorderLayout.CENTER);
-
-        // add a big widget to the scene to force the appearance of scrollbars
-        // TODO get rid of this
-        LabelWidget w = new LabelWidget(scene, "Hello world!");
-        w.setPreferredSize(new Dimension(600, 300));
-        scene.addChild(w);
+        
+        // add background and walkmask widgets
+        backgroundWidget = new ImageWidget(scene);
+        walkmaskWidget = new ImageWidget(scene);
+        backgroundWidget.setPreferredLocation(new Point(0, 0));
+        walkmaskWidget.setPreferredLocation(new Point(0, 0));
+        scene.addChild(backgroundWidget);
+        scene.addChild(walkmaskWidget);
 
         // TODO get the scene to size itself to the map correctly
 
@@ -79,7 +86,7 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
         // allows dropping of palette entities onto the map
         scene.getActions().addAction(ActionFactory.createAcceptAction(new MyAcceptProvider()));
 
-        associateLookup(Lookups.fixed(new Object[] {getPalette()}));
+        associateLookup(Lookups.fixed(new Object[] {getPalette(), map}));
 
         map.addPropertyChangeListener(this);
         map.addGameMapChangeListener(this);
@@ -96,6 +103,15 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
             Dimension d = scene.getPreferredSize();
             d.width = (Integer)evt.getNewValue();
             scene.setPreferredSize(d);
+            return;
+        }
+        if(evt.getPropertyName().equals("backgroundImage")) {
+            backgroundWidget.setImage((Image)evt.getNewValue());
+            return;
+        }
+        if(evt.getPropertyName().equals("walkmaskImage")) {
+            walkmaskWidget.setImage((Image)evt.getNewValue());
+            return;
         }
     }
 

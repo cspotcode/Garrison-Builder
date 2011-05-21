@@ -1,5 +1,7 @@
 
-package com.ganggarrison.garrisonbuilder.GameMap;
+package com.ganggarrison.garrisonbuilder.gamemap;
+
+import java.awt.Image;
 
 /**
  * WIP interface for objects that want to be notified of changes in a GameMap.

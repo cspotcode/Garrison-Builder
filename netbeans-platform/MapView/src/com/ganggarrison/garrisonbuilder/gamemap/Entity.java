@@ -1,5 +1,5 @@
 
-package com.ganggarrison.garrisonbuilder.GameMap;
+package com.ganggarrison.garrisonbuilder.gamemap;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
