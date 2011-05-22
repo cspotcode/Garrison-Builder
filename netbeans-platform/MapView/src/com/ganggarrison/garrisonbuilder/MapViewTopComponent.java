@@ -21,6 +21,7 @@ import org.netbeans.api.visual.action.AcceptProvider;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectorState;
 import org.netbeans.api.visual.action.SelectProvider;
+import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.model.ObjectScene;
 import org.netbeans.api.visual.widget.ImageWidget;
 import org.netbeans.api.visual.widget.LabelWidget;
@@ -40,6 +41,7 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
 
     private ObjectScene scene = null;
     private LayerWidget guiVisualsLayer;
+    private LayerWidget bgWmLayer;
 
     final GameMap map;
 
@@ -57,6 +59,9 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
         scene = new ObjectScene();
         guiVisualsLayer = new LayerWidget(scene);
         scene.addChild(guiVisualsLayer);
+        bgWmLayer = new LayerWidget(scene);
+        scene.addChild(bgWmLayer); 
+        bgWmLayer.bringToBack();
 
         // create a scrolling view onto the scene
         setLayout(new BorderLayout());
@@ -69,8 +74,8 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
         walkmaskWidget = new ImageWidget(scene);
         backgroundWidget.setPreferredLocation(new Point(0, 0));
         walkmaskWidget.setPreferredLocation(new Point(0, 0));
-        scene.addChild(backgroundWidget);
-        scene.addChild(walkmaskWidget);
+        bgWmLayer.addChild(backgroundWidget);
+        bgWmLayer.addChild(walkmaskWidget);
 
         // TODO get the scene to size itself to the map correctly
 
@@ -106,11 +111,13 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
             return;
         }
         if(evt.getPropertyName().equals("backgroundImage")) {
-            backgroundWidget.setImage((Image)evt.getNewValue());
+            Image i = (Image)evt.getNewValue();
+            backgroundWidget.setImage(i.getScaledInstance(i.getWidth(null) * 6, -1, 0));
             return;
         }
         if(evt.getPropertyName().equals("walkmaskImage")) {
-            walkmaskWidget.setImage((Image)evt.getNewValue());
+            Image i = (Image)evt.getNewValue();
+            walkmaskWidget.setImage(i.getScaledInstance(i.getWidth(null) * 6, -1, 0));
             return;
         }
     }

@@ -3,13 +3,12 @@ package com.ganggarrison.garrisonbuilder;
 
 import com.ganggarrison.garrisonbuilder.gamemap.Entity;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import org.netbeans.api.visual.action.ActionFactory;
-import org.netbeans.api.visual.action.MoveProvider;
-import org.netbeans.api.visual.action.MoveStrategy;
 import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.model.ObjectScene;
 import org.netbeans.api.visual.model.ObjectState;
@@ -34,7 +33,7 @@ public class EntityWidget extends Widget implements PropertyChangeListener {
         moveToEntityPosition(ent);
 
         getActions().addAction(s.createSelectAction());
-
+        
         getActions().addAction(ActionFactory.createMoveAction(
                 ActionFactory.createSnapToGridMoveStrategy(6, 6),
                 new ObjectSceneAllSelectedMoveProvider(s)

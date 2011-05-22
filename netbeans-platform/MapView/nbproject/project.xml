@@ -24,11 +24,19 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
+                    <code-name-base>org.openide.actions</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <specification-version>6.21.1</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
                     <code-name-base>org.openide.awt</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
                     <run-dependency>
-                        <specification-version>7.23.1</specification-version>
+                        <specification-version>7.30.1</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>
@@ -68,7 +76,7 @@
                     <build-prerequisite/>
                     <compile-dependency/>
                     <run-dependency>
-                        <specification-version>8.6.1</specification-version>
+                        <specification-version>8.14.1</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>
