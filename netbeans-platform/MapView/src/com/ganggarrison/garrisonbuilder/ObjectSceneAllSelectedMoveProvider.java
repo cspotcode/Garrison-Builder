@@ -5,6 +5,7 @@ import java.awt.Point;
 import org.netbeans.api.visual.action.MoveProvider;
 import org.netbeans.api.visual.model.ObjectScene;
 import org.netbeans.api.visual.widget.Widget;
+import org.openide.windows.IOProvider;
 
 /**
  *
@@ -22,7 +23,8 @@ public class ObjectSceneAllSelectedMoveProvider implements MoveProvider {
     @Override
     public void movementStarted(Widget widget) {
         // do nothing
-        System.out.println("Movement starting");
+        IOProvider.getDefault().getIO("Output", false).getOut()
+            .println("Movement starting");
     }
 
     @Override
@@ -51,7 +53,8 @@ public class ObjectSceneAllSelectedMoveProvider implements MoveProvider {
             }
         }
         lastKnownPosition = location;
-        System.out.println("offset by " + offset.x + ", " + offset.y);
+        IOProvider.getDefault().getIO("Output", false).getOut()
+            .println("offset by " + offset.x + ", " + offset.y);
     }
 
 }

@@ -12,15 +12,20 @@ import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import org.netbeans.api.visual.action.AcceptProvider;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectorState;
 import org.netbeans.api.visual.action.SelectProvider;
+import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.border.BorderFactory;
 import org.netbeans.api.visual.model.ObjectScene;
 import org.netbeans.api.visual.widget.ImageWidget;
@@ -30,6 +35,8 @@ import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.spi.palette.PaletteController;
 import org.openide.util.Exceptions;
 import org.openide.util.lookup.Lookups;
+import org.openide.windows.IOProvider;
+import org.openide.windows.InputOutput;
 import org.openide.windows.TopComponent;
 
 /**
@@ -42,6 +49,7 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
     private ObjectScene scene = null;
     private LayerWidget guiVisualsLayer;
     private LayerWidget bgWmLayer;
+    private JComponent sceneView;
 
     final GameMap map;
 
@@ -65,8 +73,8 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
 
         // create a scrolling view onto the scene
         setLayout(new BorderLayout());
-        JComponent view = scene.createView();
-        JScrollPane scrollPane = new JScrollPane(view);
+        sceneView = scene.createView();
+        JScrollPane scrollPane = new JScrollPane(sceneView);
         add(scrollPane, BorderLayout.CENTER);
         
         // add background and walkmask widgets
@@ -78,14 +86,25 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
         bgWmLayer.addChild(walkmaskWidget);
 
         // TODO get the scene to size itself to the map correctly
-
+        
+        sceneView.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                sceneView.requestFocus();
+            }
+        });
+        
+        // other custom action behaviors
+        scene.getActions().addAction(new MyAction());
+        
         // allow dragging a rectangle to select entities
         scene.getActions().addAction(ActionFactory.createRectangularSelectAction(scene, guiVisualsLayer));
 
-        // add zooming support (hold CTRL and use mouse wheel)
-        scene.getActions().addAction(ActionFactory.createZoomAction(2, true));
+        // add zooming support
+        scene.getActions().addAction(ActionFactory.createMouseCenteredZoomAction(1.3));
+        scene.getInputBindings().setZoomActionModifiers(0); 
         
-        // TODO panning doesn't seem to be working (supposed to hold down mouse wheel)
+        // pan the scene by holding down middle-mouse-button
         scene.getActions().addAction(ActionFactory.createPanAction());
 
         // allows dropping of palette entities onto the map
@@ -175,4 +194,36 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
             map.addEntity(new Entity(entType, p.x, p.y));
         }
     };
+    
+    private class MyAction extends WidgetAction.Adapter {
+
+        @Override
+        public State keyTyped(Widget widget, WidgetKeyEvent event) {
+            // TODO use Netbeans keymap options to configure this
+            IOProvider.getDefault().getIO("Output", false).getOut()
+                .println("Key was Typed.");
+            
+            // delete key: delete all selected entities
+            if(event.getKeyChar() == 127) {
+                // TODO what's going on when I do this cast?
+                Set<Entity> selectedEntities = (Set<Entity>) scene.getSelectedObjects();
+                Entity[] ents = selectedEntities.toArray(new Entity[] {});
+                for(Entity ent : ents) {
+                    map.removeEntity(ent);
+                }
+                return State.CONSUMED;
+            }
+            return State.REJECTED;
+        }
+
+        /*@Override
+        public State mousePressed(Widget widget, WidgetMouseEvent event) {
+            // must get focus or else keyboard events will not be received
+            sceneView.requestFocus();
+            // TODO doesn't work when a sub-widget is clicked and traps the event
+            
+            return State.REJECTED;
+        }*/
+        
+    }
 }
