@@ -1,6 +1,7 @@
 
 package com.ganggarrison.garrisonbuilder.gamemap;
 
+import com.ganggarrison.garrisonbuilder.Movable;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -8,7 +9,7 @@ import java.beans.PropertyChangeSupport;
  * An entity in a map.
  * @author cspotcode
  */
-public class Entity {
+public class Entity implements Movable {
     private EntityType type;
     private int x, y;
 
@@ -30,20 +31,24 @@ public class Entity {
         pcs.firePropertyChange("type", oldType, type);
     }
 
+    @Override
     public int getX() {
         return x;
     }
 
+    @Override
     public void setX(int x) {
         int oldX = this.x;
         this.x = x;
         pcs.firePropertyChange("x", oldX, x);
     }
 
+    @Override
     public int getY() {
         return y;
     }
 
+    @Override
     public void setY(int y) {
         int oldY = this.y;
         this.y = y;

@@ -42,14 +42,12 @@ public class ObjectSceneAllSelectedMoveProvider implements MoveProvider {
     public void setNewLocation(Widget widget, Point location) {
         // compute movement delta since last movement
         Point offset = new Point(location.x - lastKnownPosition.x, location.y - lastKnownPosition.y);
-        // for each selected object, move its widgets by the offset delta
+        // for each selected object that is movable, move it by the offset
         for(Object o : scene.getSelectedObjects()) {
-            // TODO move the objects, not the widgets?
-            // widgets will receive move notifications from objects anyway, and objects will be correctly moved
-            for(Widget w : scene.findWidgets(o)) {
-                Point newPos = w.getLocation();
-                newPos.translate(offset.x, offset.y);
-                w.setPreferredLocation(newPos);
+            if(o instanceof Movable) {
+                Movable m = (Movable)o;
+                m.setX(m.getX() + offset.x);
+                m.setY(m.getY() + offset.y);
             }
         }
         lastKnownPosition = location;

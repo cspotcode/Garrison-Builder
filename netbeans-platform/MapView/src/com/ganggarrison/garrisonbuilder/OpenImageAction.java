@@ -1,7 +1,6 @@
 
 package com.ganggarrison.garrisonbuilder;
 
-import com.ganggarrison.garrisonbuilder.gamemap.GameMap;
 import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -9,11 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
-import org.openide.awt.ActionID;
-import org.openide.awt.ActionReference;
-import org.openide.awt.ActionReferences;
-import org.openide.awt.ActionRegistration;
-import org.openide.util.Exceptions;
 
 /**
  * Abstract Action that prompts the user for an image file, then loads it, then
