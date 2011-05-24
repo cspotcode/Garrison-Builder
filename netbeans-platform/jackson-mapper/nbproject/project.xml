@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.apisupport.project</type>
+    <configuration>
+        <data xmlns="http://www.netbeans.org/ns/nb-module-project/3">
+            <code-name-base>org.codehaus.jacksonmapper</code-name-base>
+            <suite-component/>
+            <module-dependencies/>
+            <public-packages>
+                <package>org.codehaus.jackson.map</package>
+                <package>org.codehaus.jackson.map.annotate</package>
+                <package>org.codehaus.jackson.map.deser</package>
+                <package>org.codehaus.jackson.map.deser.impl</package>
+                <package>org.codehaus.jackson.map.exc</package>
+                <package>org.codehaus.jackson.map.ext</package>
+                <package>org.codehaus.jackson.map.introspect</package>
+                <package>org.codehaus.jackson.map.jsontype</package>
+                <package>org.codehaus.jackson.map.jsontype.impl</package>
+                <package>org.codehaus.jackson.map.module</package>
+                <package>org.codehaus.jackson.map.ser</package>
+                <package>org.codehaus.jackson.map.ser.impl</package>
+                <package>org.codehaus.jackson.map.type</package>
+                <package>org.codehaus.jackson.map.util</package>
+                <package>org.codehaus.jackson.node</package>
+                <package>org.codehaus.jackson.schema</package>
+            </public-packages>
+            <class-path-extension>
+                <runtime-relative-path>ext/jackson-mapper-lgpl-1.8.1.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/jackson-mapper-lgpl-1.8.1.jar</binary-origin>
+            </class-path-extension>
+        </data>
+    </configuration>
+</project>
