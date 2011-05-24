@@ -4,6 +4,7 @@ package com.ganggarrison.garrisonbuilder.testentitytypes;
 import com.ganggarrison.garrisonbuilder.entitytypesources.EntityTypeSource;
 import com.ganggarrison.garrisonbuilder.gamemap.EntityType;
 import java.awt.Image;
+import java.awt.Point;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,10 +33,12 @@ public class TestEntityTypesSource implements EntityTypeSource {
         }
         t1.setMapImage(i);
         t1.setPaletteImage(i);
+        t1.setMapImageOrigin(new Point(40, 40));
         types.add(t1);
         EntityType t2 = new EntityType("testEnt2");
         t2.setMapImage(i);
         t2.setPaletteImage(i);
+        t2.setMapImageOrigin(new Point(100, 0));
         types.add(t2);
         
         IOProvider.getDefault().getIO("Output", false).getOut()

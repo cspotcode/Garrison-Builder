@@ -61,6 +61,9 @@ public class EntityWidget extends Widget implements PropertyChangeListener {
     private void setupToMatchEntity(Entity e) {
         Image i = e.getType().getMapImage();
         imageWidget.setImage(i);
+        // offset image by negative origin
+        Point p = e.getType().getMapImageOrigin();
+        imageWidget.setPreferredLocation(new Point(-p.x, -p.y));
     }
 
     /**

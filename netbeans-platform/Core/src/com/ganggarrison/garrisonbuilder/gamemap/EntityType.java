@@ -2,6 +2,7 @@
 package com.ganggarrison.garrisonbuilder.gamemap;
 
 import java.awt.Image;
+import java.awt.Point;
 
 /**
  * A type of map entity. Contains the definition of the entity, with enough info
@@ -18,6 +19,8 @@ public class EntityType {
     private String id;
     // image to show in the map editor view
     private Image mapImage;
+    // point within the image that represents entity's position
+    private Point mapImageOrigin;
     // image to show in the pallette of entities
     private Image paletteImage;
 
@@ -25,6 +28,7 @@ public class EntityType {
         this.name = this.id = this.humanReadableName = "";
         mapImage = null;
         paletteImage = null;
+        mapImageOrigin = new Point(0, 0);
     }
     
     public EntityType(String name) {
@@ -33,6 +37,7 @@ public class EntityType {
         this.humanReadableName = name;
         mapImage = null;
         paletteImage = null;
+        mapImageOrigin = new Point(0, 0);
     }
 
     public String getId() {
@@ -57,6 +62,14 @@ public class EntityType {
 
     public void setMapImage(Image mapImage) {
         this.mapImage = mapImage;
+    }
+    
+    public Point getMapImageOrigin() {
+        return mapImageOrigin;
+    }
+
+    public void setMapImageOrigin(Point mapImageOrigin) {
+        this.mapImageOrigin = mapImageOrigin;
     }
 
     public String getName() {
