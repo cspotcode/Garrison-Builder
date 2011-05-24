@@ -1,8 +1,6 @@
 
 package com.ganggarrison.garrisonbuilder.gamemap;
 
-import java.awt.Image;
-
 /**
  * WIP interface for objects that want to be notified of changes in a GameMap.
  * GameMap already reports property changes to PropertyChangeListeners, so this

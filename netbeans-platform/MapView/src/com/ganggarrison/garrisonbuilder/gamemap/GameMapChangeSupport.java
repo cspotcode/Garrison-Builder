@@ -8,7 +8,7 @@ import java.util.Set;
  * 
  * @author cspotcode
  */
-public class GameMapChangeSupport {
+class GameMapChangeSupport {
     private Set<GameMapChangeListener> listeners;
 
     private GameMap map;

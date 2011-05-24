@@ -104,7 +104,10 @@
                     </run-dependency>
                 </dependency>
             </module-dependencies>
-            <public-packages/>
+            <public-packages>
+                <package>com.ganggarrison.garrisonbuilder.entitytypesources</package>
+                <package>com.ganggarrison.garrisonbuilder.gamemap</package>
+            </public-packages>
         </data>
     </configuration>
 </project>
