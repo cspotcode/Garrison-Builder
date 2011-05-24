@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.imageio.ImageIO;
 import org.openide.util.Exceptions;
+import org.openide.windows.IOProvider;
 
 /**
  *
@@ -30,12 +31,15 @@ public class TestEntityTypesSource implements EntityTypeSource {
             return new EntityType[] {};
         }
         t1.setMapImage(i);
-        t1.setPalletteImage(i);
+        t1.setPaletteImage(i);
         types.add(t1);
         EntityType t2 = new EntityType("testEnt2");
         t2.setMapImage(i);
-        t2.setPalletteImage(i);
+        t2.setPaletteImage(i);
         types.add(t2);
+        
+        IOProvider.getDefault().getIO("Output", false).getOut()
+                .println("Created 2 dummy entity types for testing purposes.");
         
         return types.toArray(new EntityType[] {});
     }

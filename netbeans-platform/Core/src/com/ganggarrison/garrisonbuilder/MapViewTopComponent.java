@@ -200,8 +200,6 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
         @Override
         public State keyTyped(Widget widget, WidgetKeyEvent event) {
             // TODO use Netbeans keymap options to configure this
-            IOProvider.getDefault().getIO("Output", false).getOut()
-                .println("Key was Typed.");
             
             // delete key: delete all selected entities
             if(event.getKeyChar() == 127) {
@@ -211,6 +209,8 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
                 for(Entity ent : ents) {
                     map.removeEntity(ent);
                 }
+                IOProvider.getDefault().getIO("Output", false).getOut()
+                        .println("Deleted " + ents.length + " entities.");
                 return State.CONSUMED;
             }
             return State.REJECTED;

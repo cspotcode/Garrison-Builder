@@ -4,6 +4,7 @@ package com.ganggarrison.garrisonbuilder;
 import com.ganggarrison.garrisonbuilder.gamemap.GameMap;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.openide.windows.IOProvider;
 
 /**
  * Action that creates a new GameMap and MapViewTopComponent to edit it.
@@ -18,7 +19,9 @@ public class NewMapViewAction implements ActionListener {
         m.setHeight(600);
         MapViewTopComponent mvtc = new MapViewTopComponent(m);
         mvtc.open();
-        //mvtc.requestActive();
+        mvtc.requestActive();
+        IOProvider.getDefault().getIO("Output", false).getOut()
+            .println("Created new map.");
     }
 
 }

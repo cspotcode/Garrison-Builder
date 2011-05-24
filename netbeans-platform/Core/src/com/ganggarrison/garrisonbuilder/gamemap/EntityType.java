@@ -19,14 +19,20 @@ public class EntityType {
     // image to show in the map editor view
     private Image mapImage;
     // image to show in the pallette of entities
-    private Image palletteImage;
+    private Image paletteImage;
 
+    public EntityType() {
+        this.name = this.id = this.humanReadableName = "";
+        mapImage = null;
+        paletteImage = null;
+    }
+    
     public EntityType(String name) {
         this.name = name;
         this.id = name;
         this.humanReadableName = name;
         mapImage = null;
-        palletteImage = null;
+        paletteImage = null;
     }
 
     public String getId() {
@@ -61,11 +67,11 @@ public class EntityType {
         this.name = name;
     }
 
-    public Image getPalletteImage() {
-        return palletteImage;
+    public Image getPaletteImage() {
+        return paletteImage;
     }
 
-    public void setPalletteImage(Image palletteImage) {
-        this.palletteImage = palletteImage;
+    public void setPaletteImage(Image palletteImage) {
+        this.paletteImage = palletteImage;
     }
 }

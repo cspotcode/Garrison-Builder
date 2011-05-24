@@ -23,8 +23,6 @@ public class ObjectSceneAllSelectedMoveProvider implements MoveProvider {
     @Override
     public void movementStarted(Widget widget) {
         // do nothing
-        IOProvider.getDefault().getIO("Output", false).getOut()
-            .println("Movement starting");
     }
 
     @Override
@@ -51,8 +49,6 @@ public class ObjectSceneAllSelectedMoveProvider implements MoveProvider {
             }
         }
         lastKnownPosition = location;
-        IOProvider.getDefault().getIO("Output", false).getOut()
-            .println("offset by " + offset.x + ", " + offset.y);
     }
 
 }
