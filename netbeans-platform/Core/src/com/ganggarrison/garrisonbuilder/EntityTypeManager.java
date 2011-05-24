@@ -2,12 +2,11 @@
 package com.ganggarrison.garrisonbuilder;
 
 import com.ganggarrison.garrisonbuilder.entitytypesources.EntityTypeSource;
-import com.ganggarrison.garrisonbuilder.entitytypesources.EntityTypeSource;
 import com.ganggarrison.garrisonbuilder.gamemap.EntityType;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.beans.IntrospectionException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,7 +24,6 @@ import org.openide.nodes.Node;
 import org.openide.nodes.AbstractNode;
 import org.openide.util.Lookup;
 import org.openide.util.datatransfer.ExTransferable;
-import org.openide.util.lookup.Lookups;
 
 // TODO this class does too much stuff; functionality is not coherent
 /**
@@ -92,7 +90,13 @@ public class EntityTypeManager {
         @Override
         protected Node createNodeForKey(EntityType entType) {
             // create leaf child
-            Node n = new AbstractNode(Children.LEAF, Lookups.fixed(new Object[] {entType}));
+            Node n;
+            try {
+                n = new EntityTypePaletteNode(entType);
+            } catch (IntrospectionException ex) {
+                // can't introspect the node, just don't add it to the palette??
+                return null;
+            }
             n.setDisplayName(entType.getHumanReadableName());
             n.setName(entType.getName());
             n.setValue("EntityType", entType);
