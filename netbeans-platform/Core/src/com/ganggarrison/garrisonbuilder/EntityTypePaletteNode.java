@@ -1,24 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.ganggarrison.garrisonbuilder;
 
 import com.ganggarrison.garrisonbuilder.gamemap.EntityType;
-import com.sun.org.apache.bcel.internal.generic.LOOKUPSWITCH;
 import java.awt.Image;
 import java.beans.IntrospectionException;
 import org.openide.nodes.BeanNode;
 import org.openide.nodes.Children;
-import org.openide.util.Lookup;
-import org.openide.util.lookup.AbstractLookup;
-import org.openide.util.lookup.AbstractLookup.Content;
-import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.Lookups;
-import org.openide.util.lookup.ProxyLookup;
 
 /**
- *
+ * Netbeans Node subclass for showing EntityTypes in the palette
  * @author cspotcode
  */
 class EntityTypePaletteNode extends BeanNode<EntityType> {

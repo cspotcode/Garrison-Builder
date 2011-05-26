@@ -2,6 +2,7 @@
 package com.ganggarrison.garrisonbuilder.gamemap;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Collections;
@@ -19,8 +20,8 @@ public class GameMap {
     private int width;
     private int height;
     
-    private Image backgroundImage;
-    private Image walkmaskImage;
+    private BufferedImage backgroundImage;
+    private BufferedImage walkmaskImage;
     
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private final GameMapChangeSupport gmcs = new GameMapChangeSupport(this);
@@ -51,22 +52,22 @@ public class GameMap {
         pcs.firePropertyChange("width", oldWidth, width);
     }
     
-    public Image getBackgroundImage() {
+    public BufferedImage getBackgroundImage() {
         return backgroundImage;
     }
 
-    public void setBackgroundImage(Image backgroundImage) {
-        Image old = this.backgroundImage;
+    public void setBackgroundImage(BufferedImage backgroundImage) {
+        BufferedImage old = this.backgroundImage;
         this.backgroundImage = backgroundImage;
         pcs.firePropertyChange("backgroundImage", old, backgroundImage);
     }
 
-    public Image getWalkmaskImage() {
+    public BufferedImage getWalkmaskImage() {
         return walkmaskImage;
     }
 
-    public void setWalkmaskImage(Image walkmaskImage) {
-        Image old = this.walkmaskImage;
+    public void setWalkmaskImage(BufferedImage walkmaskImage) {
+        BufferedImage old = this.walkmaskImage;
         this.walkmaskImage = walkmaskImage;
         pcs.firePropertyChange("walkmaskImage", old, walkmaskImage);
     }

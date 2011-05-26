@@ -1,9 +1,9 @@
 
 package com.ganggarrison.garrisonbuilder;
 
-import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -26,7 +26,7 @@ public abstract class OpenImageAction implements ActionListener {
         File selectedFile = chooser.getSelectedFile();
         
         // attempt to open the file as an image
-        Image image = null;
+        BufferedImage image = null;
         try {
             image = ImageIO.read(selectedFile);
         } catch (IOException ex) {
@@ -42,5 +42,5 @@ public abstract class OpenImageAction implements ActionListener {
      * Handler callback for when an Image is successfully loaded
      * @param i 
      */
-    public abstract void imageOpened(Image i);
+    public abstract void imageOpened(BufferedImage i);
 }

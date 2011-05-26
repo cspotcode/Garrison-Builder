@@ -3,7 +3,6 @@ package com.ganggarrison.garrisonbuilder;
 
 import com.ganggarrison.garrisonbuilder.gamemap.Entity;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.beans.PropertyChangeEvent;

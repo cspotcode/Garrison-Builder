@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: com.ganggarrison.garrisonbuilder.gg2mapsavesupport
+OpenIDE-Module-Localizing-Bundle: com/ganggarrison/garrisonbuilder/gg2mapsavesupport/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+

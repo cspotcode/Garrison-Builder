@@ -20,7 +20,8 @@ import org.codehaus.jackson.type.TypeReference;
 import org.openide.windows.IOProvider;
 
 /**
- *
+ * EntityTypeSource that produces types by loading their definitions from a JSON
+ * configuration file.
  * @author cspotcode
  */
 public class JsonEntityTypeSource implements EntityTypeSource {
