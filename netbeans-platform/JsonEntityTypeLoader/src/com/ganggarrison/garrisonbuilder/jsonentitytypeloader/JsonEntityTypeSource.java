@@ -6,16 +6,15 @@ import com.ganggarrison.garrisonbuilder.gamemap.EntityType;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.JsonParser.Feature;
 import org.codehaus.jackson.Version;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.module.SimpleModule;
+import org.codehaus.jackson.map.type.TypeFactory;
 import org.codehaus.jackson.type.TypeReference;
 import org.openide.windows.IOProvider;
 
@@ -36,10 +35,14 @@ public class JsonEntityTypeSource implements EntityTypeSource {
         imageLoadingModule.addDeserializer(Image.class, new FilenameToImageDeserializer());
         mapper.registerModule(imageLoadingModule);
         
+        // allow C- and C++-style comments and unquoted field names in JSON file
+        mapper.getJsonFactory().configure(Feature.ALLOW_COMMENTS, true)
+                               .configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        
         List<EntityType> entTypes = null;
         // attempt loading a list of EntityTypes from the file
         try {
-            entTypes = mapper.readValue(new File("C:\\Users\\cspotcode\\Documents\\dev\\Garrison-Builder-Git\\netbeans-platform\\build\\testuserdir\\entitytypes.json"), new TypeReference<List<EntityType>>() {});
+            entTypes = mapper.readValue(new File("entitytypes.json"), new TypeReference<List<EntityType>>() {});
         } catch (JsonParseException ex) {
             IOProvider.getDefault().getIO("Output", false).getOut()
                     .println("Error parsing JSON entity type configuration.");
