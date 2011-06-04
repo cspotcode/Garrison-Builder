@@ -2,22 +2,9 @@
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
 <filesystem>
     <folder name="Actions">
-        <folder name="Maps">
-            <file name="newMapViewActionThing.instance">
-                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.alwaysEnabled"/>
-                <attr name="delegate" newvalue="com.ganggarrison.garrisonbuilder.NewMapViewAction"/>
-                <attr name="displayName" stringvalue="New Map"/>
-                <attr name="iconBase" stringvalue="com/ganggarrison/garrisonbuilder/newMap.png"/>
-                <attr name="noIconInMenu" boolvalue="false"/>
-            </file>
-        </folder>
+        <folder name="Maps"/>
     </folder>
     <folder name="Toolbars">
-        <folder name="File">
-            <file name="newMapViewActionThing.shadow">
-                <attr name="originalFile" stringvalue="Actions/Maps/newMapViewActionThing.instance"/>
-                <attr name="position" intvalue="0"/>
-            </file>
-        </folder>
+        <folder name="File"/>
     </folder>
 </filesystem>

@@ -39,6 +39,10 @@ import org.openide.windows.TopComponent;
  * users will see and modify the map.
  * @author cspotcode
  */
+@TopComponent.Description(
+        iconBase="com/ganggarrison/garrisonbuilder/newMap.png",
+        preferredID="GameMapEditorPane"
+        )
 public class MapViewTopComponent extends TopComponent implements PropertyChangeListener, GameMapChangeListener {
 
     private ObjectScene scene = null;
@@ -109,11 +113,6 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
 
         map.addPropertyChangeListener(this);
         map.addGameMapChangeListener(this);
-    }
-
-    @Override
-    protected String preferredID() {
-        return "GameMapEditorPane";
     }
 
     @Override

@@ -14,7 +14,7 @@ import org.openide.windows.IOProvider;
                     iconBase="com/ganggarrison/garrisonbuilder/setWalkmask.png"
                     )
 @ActionReferences(value={
-    @ActionReference(path="Toolbars/File")
+    @ActionReference(path="Toolbars/File", position=200)
 })
 public final class SetGameMapWalkmaskImageAction extends OpenImageAction {
 

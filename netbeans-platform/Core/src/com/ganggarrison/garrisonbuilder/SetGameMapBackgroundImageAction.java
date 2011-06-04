@@ -14,7 +14,7 @@ import org.openide.windows.IOProvider;
                     iconBase="com/ganggarrison/garrisonbuilder/setBackground.png"
                     )
 @ActionReferences(value={
-    @ActionReference(path="Toolbars/File")
+    @ActionReference(path="Toolbars/File", position=100)
 })
 public final class SetGameMapBackgroundImageAction extends OpenImageAction {
 
