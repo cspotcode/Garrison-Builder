@@ -20,19 +20,15 @@
 
 // GG2DLL.cpp : Defines the exported functions for the DLL application.
 
-// using namespace std;
-// using namespace Magick;    oh forget it you already used std::
-
 #include "stdafx.h"
 #include "GG2DLL.h"
+#include "raii.hpp"
+#include <cstdlib>
 
-// the following define was used for some debugging stuff, before I wised up and used the debugger
-// I left it in just in case.
-#define WRITE_ERROR(text) {FILE * error = fopen("error.txt", "w"); fprintf(error, text); fclose(error);}
-
+const char GG2_TEXT_CHUNK_KEYWORD[] = "Gang Garrison 2 Level Data";
 
 std::string temp_filename_return_filename;
-GG2DLL_API const char* get_temp_filename(const char* directory, const char* prefix) {
+GG2DLL_API GM_STRING get_temp_filename(GM_STRING directory, GM_STRING prefix) {
 	char buffer[MAX_PATH];
 	if(GetTempFileNameA(directory, prefix, 0, buffer) == 0)
 	{
@@ -43,162 +39,72 @@ GG2DLL_API const char* get_temp_filename(const char* directory, const char* pref
 	return temp_filename_return_filename.c_str();
 }
 
+int load_png_file(const char* filename, png_structp & png_ptr, png_infop & info_ptr) {
+    raii_file file(fopen(filename, "rb"));
 
-int load_png_file(const char* filename, png_structp & png_ptr, png_infop & info_ptr, png_infop & end_info) {
-	static FILE * fp;
-	fp = fopen(filename, "rb"); // open for reading, in binary mode
-	if(fp == NULL) {
-		return -1; // error, couldn't load the file
+	if (!file.fp) {
+        return -1;
 	}
 
-	// check the file signature
-	char png_signature[8];
-
-	fread(png_signature, 1, 8, fp);
-
-	if(png_sig_cmp((png_bytep)png_signature, 0, 8)) {
-		fclose(fp);
-		// TODO: close all files and deallocate memory
-		return -2; // error, isn't a png file
-	}
-
-	// allocate the png structures
-    png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, (png_voidp)NULL, NULL, NULL);
-	if (!png_ptr) {
-		fclose(fp);
-        return -3;
-	}
-
-    info_ptr = png_create_info_struct(png_ptr);
-    if (!info_ptr)
-    {
-        png_destroy_read_struct(&png_ptr, (png_infopp)NULL, (png_infopp)NULL);
-		fclose(fp);
-        return -4;
+    if (setjmp(png_jmpbuf(png_ptr))) {
+        return -1;
     }
 
-    end_info = png_create_info_struct(png_ptr);
-    if (!end_info)
-    {
-        png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)NULL);
-		fclose(fp);
-        return -5;
-    }
+    // read the image into RAM
+	png_init_io(png_ptr, file.fp);
+	png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_IDENTITY, NULL);
 
-	//setup that longjump thing that libpng needs in case an error happens
-    if (setjmp(png_jmpbuf(png_ptr)))
-    {
-        png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
-        fclose(fp);
-        return -6;
-    }
-
-	// setup libpng io with our file
-	png_init_io(png_ptr, fp);
-
-	// tell libpng I already read 8 bytes
-	png_set_sig_bytes(png_ptr, 8);
-
-	// read the image into RAM
-	png_read_png(png_ptr, info_ptr, 0, NULL);
-	
-	// close up
-	if(fclose(fp) != 0) return -7;
-	
-	return 0; // success!
-}
-
-
-int save_png_file(const char* filename, png_structp & png_ptr, png_infop & info_ptr, png_infop & end_info) {
-	//setup that longjump thing that libpng needs in case an error happens
-    if (setjmp(png_jmpbuf(png_ptr)))
-    {
-		// TODO: close all files and deallocate memory
-        return -20;
-    }
-
-
-	// open file for writing
-	static FILE *fp;
-	fp = fopen(filename, "wb");
-
-    if (!fp)
-    {
-		// TODO: close all files and deallocate memory
-		return -21;
-    }
-
-	// setup libpng io
-    png_init_io(png_ptr, fp);
-
-	// actually write the png to the file
-	png_write_png(png_ptr, info_ptr, 0, NULL);
-
-	// close up
-	if(fclose(fp) != 0) {
-		// TODO: close all files and deallocate memory
-		return -22;
-	}
-
-	// TODO: close all files and deallocate memory
 	return 0;
 }
 
 
-GG2DLL_API double embed_PNG_leveldata(const char* png_filename, const char* new_leveldata) {
-	int retValue; // saves return values for descriptive output of where the routine failed
+int save_png_file(const char* filename, png_structp & png_ptr, png_infop & info_ptr) {
+    raii_file file(fopen(filename, "wb"));
 
-	png_structp read_ptr;
-	png_infop read_info_ptr;
-	png_infop read_end_info_ptr;
-	png_structp write_ptr;
-	png_infop write_info_ptr;
-	png_infop write_end_info_ptr;
+    if (setjmp(png_jmpbuf(png_ptr))) {
+        return -1;
+    }
+
+    if (!file.fp) {
+		return -1;
+    }
+
+    png_init_io(png_ptr, file.fp);
+	png_write_png(png_ptr, info_ptr, PNG_TRANSFORM_IDENTITY, NULL);
+
+	if(fclose(file.fp)) {
+	    return -1;
+	}
+
+	return 0;
+}
+
+
+GG2DLL_API GM_REAL embed_PNG_leveldata(GM_STRING png_filename, GM_STRING new_leveldata) {
+    raii_png_read png_read;
+    raii_png_write png_write;
+
+	png_structp &read_ptr = png_read.structp;
+	png_structp &write_ptr = png_write.structp;
+	png_infop &read_info_ptr = png_read.infop;
+    png_infop &write_info_ptr = png_write.infop;
+
+    if(!read_ptr || !write_ptr || !read_info_ptr || !write_info_ptr) {
+        return -1;
+    }
 
 	// load the PNG into memory
-	if(retValue = load_png_file(png_filename, read_ptr, read_info_ptr, read_end_info_ptr)) {
-
-		// TODO: close all files and deallocate memory
-		return retValue; // return failure if there was a problem
+	if(load_png_file(png_filename, read_ptr, read_info_ptr)) {
+		return -1;
 	}
 
-
-
-	//setup that longjump thing that libpng needs in case an error happens
-    if (setjmp(png_jmpbuf(read_ptr)))
-    {
-		// TODO: close all files and deallocate memory
-        return -30;
+    if (setjmp(png_jmpbuf(read_ptr))) {
+        return -1;
     }
 
-
-
-
-	write_ptr = png_create_write_struct
-       (PNG_LIBPNG_VER_STRING, (png_voidp)NULL,
-        NULL, NULL);
-	if (!write_ptr) {
-		// TODO: close all files and deallocate memory
-		return -31;
-	}
-
-	write_info_ptr = png_create_info_struct(write_ptr);
-    if (!write_info_ptr)
-    {
-       png_destroy_write_struct(&write_ptr,
-         (png_infopp)NULL);
-	   // TODO: close all files and deallocate memory
-       return -32;
+    if (setjmp(png_jmpbuf(write_ptr))) {
+        return -1;
     }
-
-	//setup that longjump thing that libpng needs in case an error happens
-    if (setjmp(png_jmpbuf(write_ptr)))
-    {
-		// TODO: close all files and deallocate memory
-        return -30;
-    }
-
-	
 
 	// fill in the png_info structure
 	{
@@ -208,7 +114,6 @@ GG2DLL_API double embed_PNG_leveldata(const char* png_filename, const char* new_
 			&color_type, &interlace_type, &compression_type, &filter_type))
 		{
 			png_set_IHDR(write_ptr, write_info_ptr, width, height, bit_depth,
-
 				color_type, interlace_type, compression_type, filter_type);
 		}
 	}
@@ -223,6 +128,7 @@ GG2DLL_API double embed_PNG_leveldata(const char* png_filename, const char* new_
 				red_y, green_x, green_y, blue_x, blue_y);
 		}
 	}
+
 	{
 		png_fixed_point gamma;
 
@@ -232,10 +138,9 @@ GG2DLL_API double embed_PNG_leveldata(const char* png_filename, const char* new_
 		}
 	}
 
-
 	{
 		png_charp name;
-		png_charp profile;
+		png_bytep profile;
 		png_uint_32 proflen;
 		int compression_type;
 
@@ -246,7 +151,6 @@ GG2DLL_API double embed_PNG_leveldata(const char* png_filename, const char* new_
 				profile, proflen);
 		}
 	}
-
 
 	{
 		int intent;
@@ -344,7 +248,7 @@ GG2DLL_API double embed_PNG_leveldata(const char* png_filename, const char* new_
 	{
 		png_textp original_text_ptr = NULL, new_text_ptr = NULL, leveldata_text_ptr = NULL;
 		int original_num_text, new_num_text;
-		
+
 		// grab the text
 		png_get_text(read_ptr, read_info_ptr, &original_text_ptr, &original_num_text);
 		// find the gg2 text in the array (if it exists)
@@ -355,7 +259,7 @@ GG2DLL_API double embed_PNG_leveldata(const char* png_filename, const char* new_
 				break;
 			}
 		}
-		
+
 		// if the gg2 comment wasn't found
 		if(gg2_text_index == -1) {
 
@@ -406,29 +310,6 @@ GG2DLL_API double embed_PNG_leveldata(const char* png_filename, const char* new_
 		png_data_freer(write_ptr, write_info_ptr, PNG_DESTROY_WILL_FREE_DATA, PNG_FREE_TEXT);
 	}
 
-
-
-	// THIS SECTION COMMENTED OUT BECAUSE I DON'T CARE ABOUT THE TIME CHUNK AND IT WASN'T WORKING
-	//{
-	//	png_timep mod_time;
-
-	//	if (png_get_tIME(read_ptr, read_info_ptr, &mod_time))
-	//	{
-	//		png_set_tIME(write_ptr, write_info_ptr, mod_time);
-
-	//		/* we have to use png_memcpy instead of "=" because the string
-	//		pointed to by png_convert_to_rfc1123() gets free'ed before
-	//		we use it */
-	//		png_memcpy(tIME_string,
-	//			png_convert_to_rfc1123(read_ptr, mod_time),
-	//			png_sizeof(tIME_string));
-	//		tIME_string[png_sizeof(tIME_string) - 1] = '\0';
-	//		tIME_chunk_present++;
-
-	//	}
-	//}
-
-
 	{
 		png_bytep trans;
 		int num_trans;
@@ -437,11 +318,11 @@ GG2DLL_API double embed_PNG_leveldata(const char* png_filename, const char* new_
 		if (png_get_tRNS(read_ptr, read_info_ptr, &trans, &num_trans,
 			&trans_values))
 		{
-			int sample_max = (1 << read_info_ptr->bit_depth);
+			int sample_max = (1 << png_get_bit_depth(read_ptr, read_info_ptr));
 			/* libpng doesn't reject a tRNS chunk with out-of-range samples */
-			if (!((read_info_ptr->color_type == PNG_COLOR_TYPE_GRAY &&
+			if (!((png_get_color_type(read_ptr, read_info_ptr) == PNG_COLOR_TYPE_GRAY &&
 				(int)trans_values->gray > sample_max) ||
-				(read_info_ptr->color_type == PNG_COLOR_TYPE_RGB &&
+				(png_get_color_type(read_ptr, read_info_ptr) == PNG_COLOR_TYPE_RGB &&
 				((int)trans_values->red > sample_max ||
 				(int)trans_values->green > sample_max ||
 				(int)trans_values->blue > sample_max))))
@@ -460,47 +341,32 @@ GG2DLL_API double embed_PNG_leveldata(const char* png_filename, const char* new_
 	}
 
 	// write out the png to the file
-	if((retValue = save_png_file(png_filename, write_ptr, write_info_ptr, write_end_info_ptr)) != 0) {
-
-		// TODO: close all files and deallocate memory
-		return retValue;
+	if(save_png_file(png_filename, write_ptr, write_info_ptr)) {
+		return -1;
 	}
 
-	png_destroy_read_struct(&read_ptr, &read_info_ptr, &read_end_info_ptr);
-	png_destroy_write_struct(&write_ptr, &write_info_ptr);
-	png_free(read_ptr, read_info_ptr);
-	png_free(write_ptr, write_info_ptr);
-
-	// TODO: close all files and deallocate memory
 	return 0;
 }
 
+static std::string load_leveldata(const char *png_filename) {
+    raii_png_read png_read;
 
-std::string extract_PNG_leveldata_return_leveldata;
-GG2DLL_API const char* extract_PNG_leveldata(const char* png_filename) {
+    if(!png_read.structp || !png_read.infop) {
+        return "";
+    }
 
-	png_structp read_ptr;
-	png_infop read_info_ptr;
-	png_infop read_end_info_ptr;
-
-	// load the PNG into memory
-	if(load_png_file(png_filename, read_ptr, read_info_ptr, read_end_info_ptr)) {
-
-		// TODO: close all files and deallocate memory
-		return ""; // return failure if there was a problem
+	if(load_png_file(png_filename, png_read.structp, png_read.infop)) {
+		return "";
 	}
 
-	//setup that longjump thing that libpng needs in case an error happens
-    if (setjmp(png_jmpbuf(read_ptr)))
-    {
-		// TODO: close all files and deallocate memory
+    if (setjmp(png_jmpbuf(png_read.structp))) {
         return "";
     }
 
 	// grab the text info
 	png_textp text_ptr;
 	int num_text;
-	png_get_text(read_ptr, read_info_ptr, &text_ptr, &num_text);
+	png_get_text(png_read.structp, png_read.infop, &text_ptr, &num_text);
 
 	// find the gg2 text
 	int gg2_text_index = -1;
@@ -513,25 +379,128 @@ GG2DLL_API const char* extract_PNG_leveldata(const char* png_filename) {
 
 	if(gg2_text_index == -1) { // if the text wasn't found
 		return "";
+	} else {
+        return text_ptr[gg2_text_index].text;
 	}
+}
 
-	extract_PNG_leveldata_return_leveldata = text_ptr[gg2_text_index].text;
+const std::string ENTITYTAG = "{ENTITIES}";
+const std::string ENDENTITYTAG = "{END ENTITIES}";
+const std::string WALKMASKTAG = "{WALKMASK}";
+const std::string ENDWALKMASKTAG = "{END WALKMASK}";
+const std::string DIVIDER = "\x0a";
 
-	// free up all memory used by libpng
-	png_destroy_read_struct(&read_ptr, &read_info_ptr, &read_end_info_ptr);
+static int writeGreyscalePng(const char *pngFilename, uint8_t *imageData, size_t width, size_t height) {
+    raii_png_write png_write;
+    png_bytep *row_ptr = (png_bytep*)malloc(height*sizeof(png_bytep));
 
-	return extract_PNG_leveldata_return_leveldata.c_str();
+    if(row_ptr == NULL) {
+        return -1;
+    }
+
+    if (setjmp(png_jmpbuf(png_write.structp))) {
+        free(row_ptr);
+        return -1;
+    }
+
+    png_set_IHDR(png_write.structp, png_write.infop, width, height, 8, PNG_COLOR_TYPE_GRAY,
+            PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+
+    for(size_t i=0; i<height; i++) {
+        row_ptr[i] = imageData + i*width;
+    }
+
+    png_set_rows(png_write.structp, png_write.infop, row_ptr);
+    int returnValue = save_png_file(pngFilename, png_write.structp, png_write.infop);
+    free(row_ptr);
+    return returnValue;
+}
+
+static int decodeWalkmaskToPng(const char *pngFilename, std::string walkmaskSection) {
+    size_t scanpos = 0;
+    size_t lineEnd = walkmaskSection.find(DIVIDER, scanpos);
+    if(lineEnd == std::string::npos) {
+        return -1;
+    }
+    std::string line = walkmaskSection.substr(scanpos, lineEnd-scanpos);
+    scanpos = lineEnd+1;
+    size_t width = atol(line.c_str());
+
+    lineEnd = walkmaskSection.find(DIVIDER, scanpos);
+    if(lineEnd == std::string::npos) {
+        return -1;
+    }
+    line = walkmaskSection.substr(scanpos, lineEnd-scanpos);
+    scanpos = lineEnd+1;
+    size_t height = atol(line.c_str());
+
+    if(width > 1000000 || height > 1000000) {
+        return -1;
+    }
+
+    uint8_t *imageData = (uint8_t*)malloc(width*height + 6);
+    if(imageData == NULL) {
+        return -1;
+    }
+
+    for(size_t imageIndex = 0; imageIndex < width*height && scanpos < walkmaskSection.length(); imageIndex+=6, scanpos++) {
+        uint8_t currentData = walkmaskSection.at(scanpos) - 32;
+        for(int bitpos=0; bitpos<6; bitpos++) {
+            if(currentData&(1<<(5-bitpos))) {
+                imageData[imageIndex+bitpos] = 0;
+            } else {
+                imageData[imageIndex+bitpos] = 255;
+            }
+        }
+    }
+
+    int returnValue = writeGreyscalePng(pngFilename, imageData, width, height);
+    free(imageData);
+    return returnValue;
+}
+
+std::string entitySectionWithTags_return;
+GG2DLL_API GM_STRING extract_PNG_leveldata(GM_STRING png_filename, GM_STRING walkmask_filename) {
+    std::string leveldata = load_leveldata(png_filename);
+
+    size_t entityTagPos = leveldata.find(ENTITYTAG);
+    size_t endEntityTagPos = leveldata.find(ENDENTITYTAG);
+    size_t walkmaskTagPos = leveldata.find(WALKMASKTAG);
+    size_t endWalkmaskTagPos = leveldata.find(ENDWALKMASKTAG);
+
+    if(entityTagPos == std::string::npos
+            || endEntityTagPos == std::string::npos
+            || walkmaskTagPos == std::string::npos
+            || endWalkmaskTagPos == std::string::npos
+            || entityTagPos > endEntityTagPos
+            || walkmaskTagPos > endWalkmaskTagPos) {
+        return "";
+    }
+
+    // Extract the inner content of the walkmask section
+    size_t startWalkmaskSection = walkmaskTagPos + WALKMASKTAG.length() + DIVIDER.length();
+    size_t walkmaskSectionLength = endWalkmaskTagPos - startWalkmaskSection - DIVIDER.length();
+    std::string walkmaskSection = leveldata.substr(startWalkmaskSection, walkmaskSectionLength);
+
+    // Extract the entity tag section including the tags, for returning back to gg2
+    size_t entitySectionWithTagsLength = endEntityTagPos - entityTagPos + ENDENTITYTAG.length();
+    entitySectionWithTags_return = leveldata.substr(entityTagPos, entitySectionWithTagsLength);
+
+    if(decodeWalkmaskToPng(walkmask_filename, walkmaskSection)) {
+        return "";
+    }
+
+    return entitySectionWithTags_return.c_str();
 }
 
 char compute_MD5_hex_output[16*2 + 1];
-GG2DLL_API const char* compute_MD5(const char* filename) {
+GG2DLL_API GM_STRING compute_MD5(GM_STRING filename) {
 	// open the file for binary reading
-	FILE * fp;
-	fp = fopen(filename, "rb"); // open for reading, in binary mode
-	if(fp == NULL) {
+    raii_file file(fopen(filename, "rb"));
+
+	if(file.fp == NULL) {
 		return ""; // error, couldn't load the file
 	}
-
 
 	// setup the md5 algorithm
 	md5_state_t state;
@@ -539,70 +508,21 @@ GG2DLL_API const char* compute_MD5(const char* filename) {
 	int di;
 	md5_init(&state);
 
-	while(!feof(fp)) { // while there's more stuff in the file
+	while(!feof(file.fp) && !ferror(file.fp)) { // while there's more stuff in the file
 		char buffer[201];
-		size_t amount = fread(buffer, 1, 200, fp); // read 200 bytes
+		size_t amount = fread(buffer, 1, 200, file.fp); // read 200 bytes
 		md5_append(&state, (const md5_byte_t *)buffer, amount); // give them to the md5 algorithm
 	}
+
+	if(ferror(file.fp)) {
+	    return "";
+	}
+
 	// put the md5sum into digest
 	md5_finish(&state, digest);
 	// write the digest into a readable hex string
 	for (di = 0; di < 16; ++di)
 	    sprintf(compute_MD5_hex_output + di * 2, "%02x", digest[di]);
 
-	// close the file
-	if(fclose(fp) != 0) return "";
-
 	return compute_MD5_hex_output;
-}
-
-GG2DLL_API double imageHeight(const char* fname) 
-{
-	// this function retrieves the height of the image that was inputted
-
-	std::string imageDir = fname;
-
-	std::string srcdir("");
-	if (getenv("SRCDIR") != 0)
-	{
-		srcdir = getenv("SRCDIR");
-	}
-
-	Magick::Image input(imageDir);
-	input.ping(imageDir);
-	return input.rows();
-}
-
-GG2DLL_API double imageWidth(const char* filenm) 
-{
-	// this function retrieves the width of the image that was inputted
-
-	std::string imageDir = filenm;
-
-	std::string srcdir("");
-	if (getenv("SRCDIR") != 0)
-	{
-		srcdir = getenv("SRCDIR");
-	}
-
-	Magick::Image input(imageDir);
-	input.ping(imageDir);
-	return input.columns();
-}
-
-GG2DLL_API double imagefSize(const char* file) 
-{
-	// this function retrieves the filesize of the image that was inputted
-
-	std::string imageDir = file;
-
-	std::string srcdir("");
-	if (getenv("SRCDIR") != 0)
-	{
-		srcdir = getenv("SRCDIR");
-	}
-
-	Magick::Image input(imageDir);
-	input.ping(imageDir);
-	return input.fileSize();
 }
