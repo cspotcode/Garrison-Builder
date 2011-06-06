@@ -17,6 +17,10 @@ class EntityTypePaletteNode extends BeanNode<EntityType> {
     public EntityTypePaletteNode(EntityType entType) throws IntrospectionException {
         // create leaf node, putting EntityType into the lookup
         super(entType, Children.LEAF, Lookups.fixed(new Object[] {entType}));
+        
+        setDisplayName(entType.getHumanReadableName());
+        setName(entType.getName());
+        setValue("EntityType", entType);
     }
 
     @Override
