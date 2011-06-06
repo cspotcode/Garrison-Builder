@@ -1,0 +1,6 @@
+Debug Win32
+Release Win32
+libpng_include
+libpng_lib
+zlib_lib
+zlib_include
