@@ -4,3 +4,6 @@ libpng_include
 libpng_lib
 zlib_lib
 zlib_include
+GG2DLL.dll
+libGG2DLL.dll.a
+libGG2DLL.dll.def
