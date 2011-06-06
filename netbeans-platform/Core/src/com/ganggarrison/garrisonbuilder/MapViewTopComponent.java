@@ -52,8 +52,8 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
 
     final GameMap map;
 
-    private ImageWidget backgroundWidget;
-    private ImageWidget walkmaskWidget;
+    private ScaledImageWidget backgroundWidget;
+    private ScaledImageWidget walkmaskWidget;
 
     public MapViewTopComponent(GameMap map) {
         this.map = map;
@@ -77,8 +77,10 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
         add(scrollPane, BorderLayout.CENTER);
         
         // add background and walkmask widgets
-        backgroundWidget = new ImageWidget(scene);
-        walkmaskWidget = new ImageWidget(scene);
+        backgroundWidget = new ScaledImageWidget(scene);
+        walkmaskWidget = new ScaledImageWidget(scene);
+        backgroundWidget.setScale(6);
+        walkmaskWidget.setScale(6);
         backgroundWidget.setPreferredLocation(new Point(0, 0));
         walkmaskWidget.setPreferredLocation(new Point(0, 0));
         bgWmLayer.addChild(backgroundWidget);
@@ -125,18 +127,18 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
         }
         if(evt.getPropertyName().equals("backgroundImage")) {
             Image i = (Image)evt.getNewValue();
-            backgroundWidget.setImage(i.getScaledInstance(i.getWidth(null) * 6, -1, 0));
+            backgroundWidget.setImage(i);
             return;
         }
         if(evt.getPropertyName().equals("walkmaskImage")) {
             Image i = (Image)evt.getNewValue();
-            walkmaskWidget.setImage(i.getScaledInstance(i.getWidth(null) * 6, -1, 0));
+            walkmaskWidget.setImage(i);
             return;
         }
     }
 
     private PaletteController getPalette() {
-        return EntityTypeManager.getInstance().getPalette();
+        return EntityTypePaletteFactory.getPalette(EntityTypeManager.getInstance());
     }
 
     @Override

@@ -39,7 +39,7 @@ public class EntityTypeManager {
 
     private void loadEntitiesFromSources() {
         // get all type sources from the global lookup
-        Collection<EntityTypeSource> sources = (Collection<EntityTypeSource>) Lookup.getDefault().lookupAll(EntityTypeSource.class);
+        Collection<? extends EntityTypeSource> sources = (Collection<? extends EntityTypeSource>) Lookup.getDefault().lookupAll(EntityTypeSource.class);
         
         for(EntityTypeSource source : sources) {
             // get all new entity types and add them to the set of all types
