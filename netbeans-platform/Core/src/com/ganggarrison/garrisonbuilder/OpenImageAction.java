@@ -1,6 +1,7 @@
 
 package com.ganggarrison.garrisonbuilder;
 
+import com.ganggarrison.garrisonbuilder.util.OutputHelper;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -30,12 +31,17 @@ public abstract class OpenImageAction implements ActionListener {
         try {
             image = ImageIO.read(selectedFile);
         } catch (IOException ex) {
-            // unable to load the image
-            // TODO add error feedback
+            OutputHelper.getDefault()
+                    .println("Error: unable to read image "
+                            + selectedFile.getPath());
         }
         if(image != null)
             imageOpened(image);
-        // TODO add failure feedback
+        else
+            OutputHelper.getDefault()
+                    .println("Error: unable to read image "
+                            + selectedFile.getPath()
+                            + ": image is in an unsupported format");
     }
     
     /**

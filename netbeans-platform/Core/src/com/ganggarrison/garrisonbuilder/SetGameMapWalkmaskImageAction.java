@@ -2,12 +2,12 @@
 package com.ganggarrison.garrisonbuilder;
 
 import com.ganggarrison.garrisonbuilder.gamemap.GameMap;
+import com.ganggarrison.garrisonbuilder.util.OutputHelper;
 import java.awt.image.BufferedImage;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
-import org.openide.windows.IOProvider;
 
 @ActionID(category="Maps", id="com.ganggarrison.garrisonbuilder.SetGameMapWalkmaskImageAction")
 @ActionRegistration(displayName="Set walkmask",
@@ -27,7 +27,7 @@ public final class SetGameMapWalkmaskImageAction extends OpenImageAction {
     @Override
     public void imageOpened(BufferedImage i) {
         context.setWalkmaskImage(i);
-        IOProvider.getDefault().getIO("Output", false).getOut()
+        OutputHelper.getDefault()
                 .println("Loaded new walkmask image.");
     }
 }

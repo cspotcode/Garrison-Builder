@@ -37,8 +37,6 @@ public class EntityWidget extends Widget implements PropertyChangeListener {
                 ActionFactory.createSnapToGridMoveStrategy(6, 6),
                 new ObjectSceneAllSelectedMoveProvider(s)
         ));
-        
-        // TODO moving entityWidget needs to also move the entity
 
         e.addPropertyChangeListener(this);
     }

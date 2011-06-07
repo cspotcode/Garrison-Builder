@@ -3,6 +3,7 @@ package com.ganggarrison.garrisonbuilder.testentitytypes;
 
 import com.ganggarrison.garrisonbuilder.entitytypesources.EntityTypeSource;
 import com.ganggarrison.garrisonbuilder.gamemap.EntityType;
+import com.ganggarrison.garrisonbuilder.util.OutputHelper;
 import java.awt.Image;
 import java.awt.Point;
 import java.io.IOException;
@@ -10,7 +11,6 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.imageio.ImageIO;
 import org.openide.util.Exceptions;
-import org.openide.windows.IOProvider;
 
 /**
  *
@@ -41,7 +41,7 @@ public class TestEntityTypesSource implements EntityTypeSource {
         t2.setMapImageOrigin(new Point(100, 0));
         types.add(t2);
         
-        IOProvider.getDefault().getIO("Output", false).getOut()
+        OutputHelper.getDefault()
                 .println("Created 2 dummy entity types for testing purposes.");
         
         return types.toArray(new EntityType[] {});

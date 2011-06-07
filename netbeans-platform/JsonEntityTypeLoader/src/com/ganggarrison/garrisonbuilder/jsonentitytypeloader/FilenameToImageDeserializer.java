@@ -1,6 +1,7 @@
 
 package com.ganggarrison.garrisonbuilder.jsonentitytypeloader;
 
+import com.ganggarrison.garrisonbuilder.util.OutputHelper;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -22,7 +23,7 @@ class FilenameToImageDeserializer<Image> extends JsonDeserializer<Image> {
     public Image deserialize(JsonParser jp, DeserializationContext dc) throws IOException, JsonProcessingException {
         // read a string value, which should be an image filename
         String filename = jp.readValueAs(String.class);
-        IOProvider.getDefault().getIO("Output", false).getOut()
+        OutputHelper.getDefault()
                 .println("Read filename for an image from JSON: " + filename);
         return (Image) ImageIO.read(new File(filename));
     }

@@ -107,6 +107,7 @@
             <public-packages>
                 <package>com.ganggarrison.garrisonbuilder.entitytypesources</package>
                 <package>com.ganggarrison.garrisonbuilder.gamemap</package>
+                <package>com.ganggarrison.garrisonbuilder.util</package>
             </public-packages>
         </data>
     </configuration>

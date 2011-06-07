@@ -5,6 +5,7 @@ import com.ganggarrison.garrisonbuilder.gamemap.Entity;
 import com.ganggarrison.garrisonbuilder.gamemap.GameMap;
 import com.ganggarrison.garrisonbuilder.gamemap.EntityType;
 import com.ganggarrison.garrisonbuilder.gamemap.GameMapChangeListener;
+import com.ganggarrison.garrisonbuilder.util.OutputHelper;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -25,13 +26,11 @@ import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectorState;
 import org.netbeans.api.visual.action.WidgetAction;
 import org.netbeans.api.visual.model.ObjectScene;
-import org.netbeans.api.visual.widget.ImageWidget;
 import org.netbeans.api.visual.widget.LayerWidget;
 import org.netbeans.api.visual.widget.Widget;
 import org.netbeans.spi.palette.PaletteController;
 import org.openide.util.Exceptions;
 import org.openide.util.lookup.Lookups;
-import org.openide.windows.IOProvider;
 import org.openide.windows.TopComponent;
 
 /**
@@ -43,7 +42,7 @@ import org.openide.windows.TopComponent;
         iconBase="com/ganggarrison/garrisonbuilder/newMap.png",
         preferredID="GameMapEditorPane"
         )
-public class MapViewTopComponent extends TopComponent implements PropertyChangeListener, GameMapChangeListener {
+public class MapEditorTopComponent extends TopComponent implements PropertyChangeListener, GameMapChangeListener {
 
     private ObjectScene scene = null;
     private LayerWidget guiVisualsLayer;
@@ -55,7 +54,7 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
     private ScaledImageWidget backgroundWidget;
     private ScaledImageWidget walkmaskWidget;
 
-    public MapViewTopComponent(GameMap map) {
+    public MapEditorTopComponent(GameMap map) {
         this.map = map;
 
         setDisplayName("GG2 Map");
@@ -205,7 +204,7 @@ public class MapViewTopComponent extends TopComponent implements PropertyChangeL
                 for(Entity ent : ents) {
                     map.removeEntity(ent);
                 }
-                IOProvider.getDefault().getIO("Output", false).getOut()
+                OutputHelper.getDefault()
                         .println("Deleted " + ents.length + " entities.");
                 return State.CONSUMED;
             }

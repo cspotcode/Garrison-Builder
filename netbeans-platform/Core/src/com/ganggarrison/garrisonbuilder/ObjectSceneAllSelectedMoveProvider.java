@@ -5,7 +5,6 @@ import java.awt.Point;
 import org.netbeans.api.visual.action.MoveProvider;
 import org.netbeans.api.visual.model.ObjectScene;
 import org.netbeans.api.visual.widget.Widget;
-import org.openide.windows.IOProvider;
 
 /**
  *

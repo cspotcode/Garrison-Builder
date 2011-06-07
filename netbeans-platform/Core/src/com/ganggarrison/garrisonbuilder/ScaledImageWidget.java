@@ -4,13 +4,11 @@ package com.ganggarrison.garrisonbuilder;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import org.netbeans.api.visual.widget.ImageWidget;
 import org.netbeans.api.visual.widget.Scene;
 
 /**
- *
+ * Like ImageWidget but supports scaling by some int factor.
  * @author cspotcode
  */
 public class ScaledImageWidget extends ImageWidget {
@@ -46,7 +44,5 @@ public class ScaledImageWidget extends ImageWidget {
         Graphics2D g = getGraphics();
         g.drawImage(i, 0, 0, i.getWidth(null) * scale, i.getHeight(null) * scale, null);
     }
-    
-    
     
 }
