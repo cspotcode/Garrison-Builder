@@ -6,6 +6,7 @@ import com.ganggarrison.garrisonbuilder.gamemap.GameMap;
 import com.ganggarrison.garrisonbuilder.gamemap.EntityType;
 import com.ganggarrison.garrisonbuilder.gamemap.GameMapChangeListener;
 import com.ganggarrison.garrisonbuilder.util.OutputHelper;
+import com.ganggarrison.garrisonbuilder.util.ToggleAction;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -21,6 +22,8 @@ import java.io.IOException;
 import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 import org.netbeans.api.visual.action.AcceptProvider;
 import org.netbeans.api.visual.action.ActionFactory;
 import org.netbeans.api.visual.action.ConnectorState;
@@ -49,7 +52,10 @@ public class MapEditorTopComponent extends TopComponent implements PropertyChang
     private LayerWidget bgWmLayer;
     private JComponent sceneView;
 
-    final GameMap map;
+    private JToggleButton bgVisibilityToggle;
+    private JToggleButton wmVisibilityToggle;
+    
+    private final GameMap map;
 
     private ScaledImageWidget backgroundWidget;
     private ScaledImageWidget walkmaskWidget;
@@ -85,7 +91,33 @@ public class MapEditorTopComponent extends TopComponent implements PropertyChang
         bgWmLayer.addChild(backgroundWidget);
         bgWmLayer.addChild(walkmaskWidget);
 
-        // TODO get the scene to size itself to the map correctly
+        // create background and walkmask visibility buttons
+        bgVisibilityToggle = new JToggleButton("Background");
+        bgVisibilityToggle.setSelected(true);
+        bgVisibilityToggle.addActionListener(new ToggleAction() {
+            @Override
+            public void doAction(boolean isSelected) {
+                backgroundWidget.setVisible(isSelected);
+                backgroundWidget.revalidate();
+                scene.validate();
+            }
+        });
+        wmVisibilityToggle = new JToggleButton("Walkmask");
+        wmVisibilityToggle.setSelected(true);
+        wmVisibilityToggle.addActionListener(new ToggleAction() {
+            @Override
+            public void doAction(boolean isSelected) {
+                walkmaskWidget.setVisible(isSelected);
+                walkmaskWidget.revalidate();
+                scene.validate();
+            }
+        });
+        
+        // setup button toolbar
+        JToolBar toolbar = new JToolBar();
+        toolbar.add(bgVisibilityToggle);
+        toolbar.add(wmVisibilityToggle);
+        add(toolbar, BorderLayout.NORTH);
         
         sceneView.addMouseListener(new MouseAdapter() {
             @Override
@@ -221,4 +253,5 @@ public class MapEditorTopComponent extends TopComponent implements PropertyChang
         }*/
         
     }
+    
 }
