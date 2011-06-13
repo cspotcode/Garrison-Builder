@@ -12,7 +12,7 @@ GG2DLL
 * Sources for the GG2 DLL.  This DLL allows the Garrison Builder and Gang
 Garrison to compute the MD5 sum of files, embed and extract map data from PNG
 files, and perform a few other miscellaneous operations on PNG images.  This
-directory contains not only the C++ source files but also the Visual Studio
+directory contains not only the C++ source files but also the Code::Blocks
 project files to build the DLL.
 
 GG2DLLext
