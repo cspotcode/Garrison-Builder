@@ -31,6 +31,9 @@ public class EntityWidget extends Widget implements PropertyChangeListener {
         setupToMatchEntity(e);
         moveToEntityPosition(ent);
 
+        // seems to fix some bugs where new entities don't appear right away
+        repaint();
+        
         getActions().addAction(s.createSelectAction());
         
         getActions().addAction(ActionFactory.createMoveAction(

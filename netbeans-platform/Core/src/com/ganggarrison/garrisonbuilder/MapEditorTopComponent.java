@@ -1,6 +1,7 @@
 
 package com.ganggarrison.garrisonbuilder;
 
+import com.ganggarrison.garrisonbuilder.entitytypemanager.EntityTypeManager;
 import com.ganggarrison.garrisonbuilder.gamemap.Entity;
 import com.ganggarrison.garrisonbuilder.gamemap.GameMap;
 import com.ganggarrison.garrisonbuilder.gamemap.EntityType;
@@ -176,7 +177,7 @@ public class MapEditorTopComponent extends TopComponent implements PropertyChang
     public void entityAdded(GameMap m, Entity e) {
         EntityWidget w = new EntityWidget(scene, e);
         scene.addChild(w);
-        scene.repaint(); // TODO shouldn't a repaint happen automatically because a widget has been added?
+        scene.validate();
         scene.addObject(e, w);
     }
 
