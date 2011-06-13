@@ -20,7 +20,7 @@ import org.openide.filesystems.FileChooserBuilder;
         displayName="Compile GG2 Map",
         iconBase="com/ganggarrison/garrisonbuilder/gg2mapsavesupport/saveMap.png"
         )
-@ActionReference(path="Toolbars/File")
+@ActionReference(path="Toolbars/File", position=400)
 public class CompileGG2MapAction implements ActionListener {
 
     final GameMap context;
