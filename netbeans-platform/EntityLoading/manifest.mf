@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: com.ganggarrison.garrisonbuilder.entityloading
+OpenIDE-Module-Localizing-Bundle: com/ganggarrison/garrisonbuilder/entityloading/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+
