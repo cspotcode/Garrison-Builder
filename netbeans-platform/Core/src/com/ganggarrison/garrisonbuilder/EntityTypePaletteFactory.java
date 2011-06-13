@@ -1,6 +1,7 @@
 
 package com.ganggarrison.garrisonbuilder;
 
+import com.ganggarrison.garrisonbuilder.entitytypemanager.EntityTypeManager;
 import com.ganggarrison.garrisonbuilder.gamemap.EntityType;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;

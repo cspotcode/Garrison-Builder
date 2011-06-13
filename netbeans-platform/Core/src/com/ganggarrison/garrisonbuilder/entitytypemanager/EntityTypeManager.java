@@ -1,5 +1,5 @@
 
-package com.ganggarrison.garrisonbuilder;
+package com.ganggarrison.garrisonbuilder.entitytypemanager;
 
 import com.ganggarrison.garrisonbuilder.entitytypesources.EntityTypeSource;
 import com.ganggarrison.garrisonbuilder.gamemap.EntityType;
